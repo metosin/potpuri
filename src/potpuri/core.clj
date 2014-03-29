@@ -1,6 +1,9 @@
 (ns potpuri.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defmacro fn->
+  "Creates a function that threads on input with some->"
+  [& body] `(fn [x#] (some-> x# ~@body)))
+
+(defmacro fn->>
+  "Creates a function that threads on input with some->>"
+  [& body] `(fn [x#] (some->> x# ~@body)))
