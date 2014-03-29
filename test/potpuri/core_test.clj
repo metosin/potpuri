@@ -18,3 +18,15 @@
                 [[:a :b :c] 1]]]
     (path-vals original) => target
     (assoc-in-path-vals target) => original))
+
+(fact "dissoc-in"
+  (let [m {:a {:b1 {:c1 "kikka"
+                    :c2 "kakka"}
+               :b2 "kukka"}}]
+    (dissoc-in m [:a]) => {}
+    (dissoc-in m [:a :b2]) => {:a {:b1 {:c1 "kikka"
+                                        :c2 "kakka"}}}
+    (dissoc-in m [:a :b1 :c2]) => {:a {:b1 {:c1 "kikka"}
+                                       :b2 "kukka"}}
+    (dissoc-in m [nil]) => m))
+
