@@ -30,3 +30,6 @@
                                        :b2 "kukka"}}
     (dissoc-in m [nil]) => m))
 
+(fact "map-of"
+  (let [a 1 b true c [:abba :jabba]]
+    (map-of a b c) => {:a 1 :b true :c [:abba :jabba]}))
