@@ -9,14 +9,15 @@
     (inc-x m) => 2
     (sum-doubled-vals m) => 12))
 
-(fact "path-vals & assoc-in-path-vals"
-  (let [original {:a {:b {:c 1
-                          :d 2}
-                      :e 3}}
-        target [[[:a :e] 3]
-                [[:a :b :d] 2]
-                [[:a :b :c] 1]]]
-    (path-vals original) => target
+(let [original {:a {:b {:c 1
+                        :d 2}
+                    :e 3}}
+      target [[[:a :e] 3]
+              [[:a :b :d] 2]
+              [[:a :b :c] 1]]]
+  (fact path-vals
+    (path-vals original) => (contains target :in-any-order))
+  (fact assoc-in-path-vals
     (assoc-in-path-vals target) => original))
 
 (fact "dissoc-in"
