@@ -33,3 +33,37 @@
 (fact "map-of"
   (let [a 1 b true c [:abba :jabba]]
     (map-of a b c) => {:a 1 :b true :c [:abba :jabba]}))
+
+(facts deep-merge
+  (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
+  (deep-merge {:a 1} {:a 2}) => {:a 2}
+  (deep-merge {:a {:b 1}} {:a {:b 2}}) => {:a {:b 2}}
+  (deep-merge {:a {:b 1}} {:a {:b nil}}) => {:a {:b nil}}
+  (deep-merge {:a 1} nil) => nil)
+
+(facts wrap-into
+  (wrap-into [] "foo") => ["foo"]
+  (wrap-into [] ["a" "b"]) => ["a" "b"]
+  (wrap-into #{} "a") => #{"a"}
+  (wrap-into #{} ["a" "b"]) => #{"a" "b"})
+
+(facts assoc-if
+  (assoc-if {} :a 5) => {:a 5}
+  (assoc-if {:a 5} :b nil) => {:a 5}
+  (assoc-if {:a 5} :a nil) => {:a 5})
+
+(facts conjv
+  (conjv 3 [1 2]) => [1 2 3])
+
+(facts consv
+  (consv 1 [2 3]) => [1 2 3])
+
+(def test-coll [{:id 1 :foo "bar"}
+                {:id 2 :foo "foo"}])
+
+(facts find-index
+  (find-index test-coll :id 1) => 0
+  (find-index test-coll :id 2) => 1)
+
+(facts find-first
+  (find-first test-coll :id 2) => {:id 2 :foo "foo"})

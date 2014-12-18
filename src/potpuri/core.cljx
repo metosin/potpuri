@@ -45,3 +45,66 @@
    symbol values as values."
   [& syms]
   `(zipmap ~(vec (map keyword syms)) ~(vec syms)))
+
+(defn deep-merge
+  "Recursively merges maps if all the vals are maps."
+  [& vals]
+  (if (every? map? vals)
+    (apply merge-with deep-merge vals)
+    (last vals)))
+
+(defn wrap-into
+  "Wrap non-collection values into given collection.
+   Collections are only put into the collection (non-wrapped).
+
+   Examples:
+   (wrap-into [] :a) => [:a]
+   (wrap-into [] [:a]) => [:a]
+   (wrap-into #{} [:a]) => #{:a}"
+  [coll v]
+  (into coll (if (coll? v)
+               v
+               [v])))
+
+(defn assoc-if
+  "Assoc key-values pairs with non-nil values into map."
+  ([m key val] (if-not (nil? val) (assoc m key val) m))
+  ([m key val & kvs]
+   (let [ret (assoc-if m key val)]
+     (if kvs
+       (if (next kvs)
+         (recur ret (first kvs) (second kvs) (nnext kvs))
+         (throw (IllegalArgumentException.
+                  "assoc expects even number of arguments after map/vector, found odd number")))
+       ret))))
+
+; FIXME [coll where]
+; where `where` is a map, fn or value?
+(defn find-index
+  "Find index of vector where item has matching value on given key.
+
+   Usable with ->"
+  [coll k v]
+  (first (keep-indexed #(if (= v (get %2 k)) %1) coll)))
+
+; FIXME: [coll where]
+(defn find-first
+  "Find first value from collection where item has matching value for given key.
+
+   Usable with ->"
+  [coll k v]
+  (some (fn [x] (if (= v (get x k)) x)) coll))
+
+(defn conjv
+  "Append an element to a collection. Returns a vector.
+
+   Usable with partial"
+  [el coll]
+  (into [] (conj coll el)))
+
+(defn consv
+  "Prepend an element to a collection. Returns a vector.
+
+   Usable with partial"
+  [el coll]
+  (into [] (cons el coll)))
