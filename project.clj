@@ -23,4 +23,6 @@
 
   :profiles {:dev {:plugins [[lein-midje "3.1.3"]
                              [com.keminglabs/cljx "0.5.0"]]
-                   :dependencies [[midje "1.6.3"]]}})
+                   :dependencies [[midje "1.6.3"]]}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha4"]]}}
+  :aliases {"all" ["with-profile" "dev:dev,1.7"]})
