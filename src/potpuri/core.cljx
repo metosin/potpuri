@@ -40,10 +40,8 @@
       m)
     (dissoc m k)))
 
-
 (defmacro map-of
   "creates map with symbol names as keywords as keys and
    symbol values as values."
   [& syms]
   `(zipmap ~(vec (map keyword syms)) ~(vec syms)))
-
