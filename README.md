@@ -1,6 +1,4 @@
-# potpuri
-
-[![Build Status](https://travis-ci.org/metosin/potpuri.svg?branch=master)](https://travis-ci.org/metosin/potpuri)
+# potpuri [![Build Status](https://travis-ci.org/metosin/potpuri.svg?branch=master)](https://travis-ci.org/metosin/potpuri)
 
 [API Docs](http://metosin.github.io/potpuri/potpuri.core.html).
 
