@@ -107,17 +107,18 @@
   (some (fn [x] (if (= v (get x k)) x)) coll))
 
 (defn conjv
-  "Append an element to a collection. Returns a vector.
+  "Append an element to a collection. If collection is nil,
+   creates vector instead of sequence.
 
-   Usable with partial"
+   Usable with update-in, ->"
   {:added "0.2.0"}
-  [el coll]
-  (into [] (conj coll el)))
+  [coll el]
+  ((fnil conj []) coll el))
 
 (defn consv
   "Prepend an element to a collection. Returns a vector.
 
-   Usable with partial"
+   Usable with update-in, ->"
   {:added "0.2.0"}
-  [el coll]
+  [coll el]
   (into [] (cons el coll)))

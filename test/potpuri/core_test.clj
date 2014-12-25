@@ -54,10 +54,16 @@
   (assoc-if {:a 5} :a nil) => {:a 5})
 
 (facts conjv
-  (conjv 3 [1 2]) => [1 2 3])
+  (conjv [1 2] 3) => [1 2 3]
+  (update-in {:a [1 2]} [:a] conjv 3) => {:a [1 2 3]}
+  (-> [1 2] (conjv 3)) => [1 2 3]
+  (fact "conjv to nil will create vec instead of seq"
+    (:a (update-in {} [:a] conjv 1)) => vector?))
 
 (facts consv
-  (consv 1 [2 3]) => [1 2 3])
+  (consv [2 3] 1) => [1 2 3]
+  (update-in {:a [2 3]} [:a] consv 1) => {:a [1 2 3]}
+  (-> [2 3] (consv 1)) => [1 2 3])
 
 (def test-coll [{:id 1 :foo "bar"}
                 {:id 2 :foo "foo"}])
