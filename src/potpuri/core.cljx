@@ -93,8 +93,8 @@
     where
 
     (and (map? where) (= (count where) 1))
-    (fn [v]
-      (let [[where-k where-v] (first where)]
+    (let [[where-k where-v] (first where)]
+      (fn [v]
         (= (get v where-k) where-v)))
 
     (map? where)
