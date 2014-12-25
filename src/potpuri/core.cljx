@@ -87,24 +87,51 @@
                   "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
-; FIXME [coll where]
-; where `where` is a map, fn or value?
+(defn- create-predicate [where]
+  (cond
+    (fn? where)
+    where
+
+    (and (map? where) (= (count where) 1))
+    (fn [v]
+      (let [[where-k where-v] (first where)]
+        (= (get v where-k) where-v)))
+
+    (map? where)
+    (fn [v]
+      (not (some (fn [[where-k where-v]]
+                   (not= (get v where-k) where-v))
+                 where)))
+
+    :default
+    (fn [v]
+      (= v where))))
+
 (defn find-index
-  "Find index of vector where item has matching value on given key.
+  "Find index of vector which matches the where parameter.
+
+   If where parameter is:
+   - a fn, it's used as predicate as is
+   - a map, a predicate is created which checks if value in collection has
+     same values for each key in where map
+   - any value, a predicate is created which checks if value is identitical
 
    Usable with ->"
   {:added "0.2.0"}
-  [coll k v]
-  (first (keep-indexed #(if (= v (get %2 k)) %1) coll)))
+  [coll where]
+  (let [pred (create-predicate where)]
+    (first (keep-indexed #(if (pred %2) %1) coll))))
 
-; FIXME: [coll where]
 (defn find-first
-  "Find first value from collection where item has matching value for given key.
+  "Find first value from collection which mathes the where parameter.
+
+   Check find-index for documentation on where parameter.
 
    Usable with ->"
   {:added "0.2.0"}
-  [coll k v]
-  (some (fn [x] (if (= v (get x k)) x)) coll))
+  [coll where]
+  (let [pred (create-predicate where)]
+    (some #(if (pred %) %) coll)))
 
 (defn conjv
   "Append an element to a collection. If collection is nil,

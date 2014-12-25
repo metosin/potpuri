@@ -69,8 +69,18 @@
                 {:id 2 :foo "foo"}])
 
 (facts find-index
-  (find-index test-coll :id 1) => 0
-  (find-index test-coll :id 2) => 1)
+  (fact "map based where"
+    (find-index test-coll {:id 1}) => 0
+    (find-index test-coll {:id 2}) => 1
+    (find-index test-coll {:id 2 :foo "foo"}) => 1)
+
+  (fact "predicate where"
+    (find-index test-coll (comp even? :id)) => 1)
+  (fact "value identity where"
+    (find-index [4 3 2] 3) => 1)
+
+  (-> test-coll (find-index {:id 2})) => 1)
 
 (facts find-first
-  (find-first test-coll :id 2) => {:id 2 :foo "foo"})
+  (find-first test-coll {:id 2}) => (nth test-coll 1)
+  (-> test-coll (find-first {:id 2})) => (nth test-coll 1))
