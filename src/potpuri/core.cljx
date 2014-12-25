@@ -92,16 +92,11 @@
     (fn? where)
     where
 
-    (and (map? where) (= (count where) 1))
-    (let [[where-k where-v] (first where)]
-      (fn [v]
-        (= (get v where-k) where-v)))
-
     (map? where)
     (fn [v]
-      (not (some (fn [[where-k where-v]]
-                   (not= (get v where-k) where-v))
-                 where)))
+      (every? (fn [[where-k where-v]]
+                (= (get v where-k) where-v))
+              where))
 
     :default
     (fn [v]
