@@ -23,7 +23,8 @@
 
   :profiles {:dev {:plugins [[lein-midje "3.1.3"]
                              [com.keminglabs/cljx "0.5.0"]
-                             [lein-pdo "0.1.1"]]
+                             [lein-pdo "0.1.1"]
+                             [jonase/eastwood "0.2.1"]]
                    :dependencies [[midje "1.6.3"]
                                   [criterium "0.4.3"]]}
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha4"]]}}

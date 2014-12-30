@@ -1,7 +1,7 @@
 sudo: false
 language: clojure
 lein: lein2
-script: lein2 with-profile $PROFILE do midje, check
+script: lein2 with-profile $PROFILE do midje, check, eastwood
 env:
   - PROFILE=dev
   - PROFILE=dev,1.7
@@ -9,3 +9,6 @@ jdk:
   - openjdk6
   - openjdk7
   - oraclejdk8
+cache:
+  directories:
+  - $HOME/.m2
