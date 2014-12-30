@@ -1,14 +1,7 @@
 #!/bin/bash
 
-if [[ $TRAVIS_PULL_REQUEST ]]; then
+if [[ $TRAVIS_PULL_REQUEST == "true" ]]; then
     echo "PR, not building docs."
-    exit 0
-fi
-
-branch=$(git rev-parse --abbrev-ref HEAD)
-
-if [[ $branch != "master" ]]; then
-    echo "Not master branch, not building docs."
     exit 0
 fi
 
