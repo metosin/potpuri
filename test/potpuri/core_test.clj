@@ -1,6 +1,7 @@
 (ns potpuri.core-test
   (:require [midje.sweet :refer :all]
-            [potpuri.core :refer :all]))
+            [potpuri.core :refer :all]
+            [criterium.core :refer :all]))
 
 (facts "fn-> & fn->>"
   (let [inc-x  (fn-> :x inc)
@@ -64,6 +65,10 @@
   (consv [2 3] 1) => [1 2 3]
   (update-in {:a [2 3]} [:a] consv 1) => {:a [1 2 3]}
   (-> [2 3] (consv 1)) => [1 2 3])
+
+(comment
+  (quick-bench (into [1] [2 3 4]))
+  (quick-bench (apply vector 1 [ 2 3 4])))
 
 (def test-coll [{:id 1 :foo "bar"}
                 {:id 2 :foo "foo"}])

@@ -143,4 +143,4 @@
    Usable with update-in, ->"
   {:added "0.2.0"}
   [coll el]
-  (into [] (cons el coll)))
+  (apply vector el coll))
