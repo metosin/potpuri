@@ -7,7 +7,7 @@ env:
   - PROFILE=dev
   - PROFILE=dev,1.7
   global:
-    secure: VCL3bkz8ixtiIZY15JPfJKiHyDzI0pvRKsLusfGE01q0Zx51cM6pooDHyhqkPq5qJahbco5RrntqqVNPI8S+5uHFeCBKQBq4IbF1RpxNmyvPpvBEzeLGh4mHfHEAtIoUrR0S3Gi71yX7Yxun5nIHmRJxIDyuV+rBa8EpUZgJKX4=
+  - secure: Nr4HXDJbzGxwon/hxL9LbFPGF+UXUvk83VDfGaYlWjyJlPOxn5lf9jjpczjA1m01UXIFhvK/d5DWqO0eMX7zw+aZLeCehPK9imix17kbXqKWi/f9fNqgSuonereIhZ8FMPjamSKkoCUXgz0q5WJ4ER2UHAuXcmQB9wg/MeRJmhY=
 jdk:
 - openjdk6
 - openjdk7
@@ -16,7 +16,7 @@ cache:
   directories:
   - "$HOME/.m2"
 after_success:
-  - curl -s "http://www.deployasaur.us/deploy.sh" | bash
+- curl -s "http://www.deployasaur.us/deploy.sh" | bash
 notifications:
   flowdock:
     secure: cYGPwnvB5mf4x8gLYKwWKK32LBT2eDuF7unpHwbyw+nVz/sMjpb3GXlcWY48rF2oqpE2pvKtqx07nfIsA89mhPCAjaXKP77fZv9QBlmLtMwnD26PDWIMlCIp9aPg4ktHYOvYjslycrFBUj69FWpV7ciLYojv4VC1/J5XEQgF2LE=

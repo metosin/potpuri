@@ -8,8 +8,8 @@ fi
 deploy_url="https://${GH_TOKEN}@github.com/metosin/potpuri.git"
 rev=$(git rev-parse HEAD)
 
-git config --global user.name $GIT_NAME
-git config --global user.email $GIT_EMAIL
+git config user.name "$GIT_NAME"
+git config user.email "$GIT_EMAIL"
 
 git clone --branch gh-pages $deploy_url doc
 lein doc
