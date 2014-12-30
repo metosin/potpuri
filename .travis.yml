@@ -1,6 +1,9 @@
 language: clojure
 lein: lein2
-script: lein2 do clean, all midje, all check
+script: lein2 with-profile $PROFILE midje, check
+matrix:
+  - PROFILE=dev
+  - PROFILE=dev,1.7
 jdk:
   - openjdk6
   - openjdk7
