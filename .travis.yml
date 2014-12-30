@@ -3,12 +3,15 @@ language: clojure
 lein: lein2
 script: lein2 with-profile $PROFILE do midje, check, eastwood
 env:
+  matrix:
   - PROFILE=dev
   - PROFILE=dev,1.7
+  global:
+    secure: VCL3bkz8ixtiIZY15JPfJKiHyDzI0pvRKsLusfGE01q0Zx51cM6pooDHyhqkPq5qJahbco5RrntqqVNPI8S+5uHFeCBKQBq4IbF1RpxNmyvPpvBEzeLGh4mHfHEAtIoUrR0S3Gi71yX7Yxun5nIHmRJxIDyuV+rBa8EpUZgJKX4=
 jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk8
+- openjdk6
+- openjdk7
+- oraclejdk8
 cache:
   directories:
-  - $HOME/.m2
+  - "$HOME/.m2"
