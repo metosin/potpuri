@@ -144,3 +144,24 @@
   {:added "0.2.0"}
   [coll el]
   (apply vector el coll))
+
+;;;; map for kv collections
+
+;; These are like ones in medley
+
+(defn map-keys [f coll]
+  "Map the keys of given associative collection using function."
+  {:added "0.2.0"}
+  (persistent! (reduce-kv (fn [acc k v]
+                            (assoc! acc (f k) v))
+                          (transient (empty coll)) coll)))
+
+(defn map-vals [f coll]
+  "Map the values of given associative collection using function."
+  {:added "0.2.0"}
+  (persistent! (reduce-kv (fn [acc k v]
+                            (assoc! acc k (f v)))
+                          (transient (empty coll)) coll)))
+
+;; filter-keys, filter-vals, and keep-* are unnecessary I think
+;; (comp pred key) and (comp pred val) can be used with normal filter and keep

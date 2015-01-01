@@ -89,3 +89,9 @@
 (facts find-first
   (find-first test-coll {:id 2}) => (nth test-coll 1)
   (-> test-coll (find-first {:id 2})) => (nth test-coll 1))
+
+(facts map-keys
+  (map-keys keyword {"a" 1 "b" 2}) => {:a 1 :b 2})
+
+(facts map-keys
+  (map-vals inc {:a 1 :b 2}) => {:a 2 :b 3})
