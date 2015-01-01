@@ -1,4 +1,4 @@
-(defproject potpuri "0.2.0"
+(defproject metosin/potpuri "0.2.0"
   :description "Metosin potpuri"
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
