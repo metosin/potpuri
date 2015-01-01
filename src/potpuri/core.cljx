@@ -53,12 +53,28 @@
   `(zipmap ~(vec (map keyword syms)) ~(vec syms)))
 
 (defn deep-merge
-  "Recursively merges maps if all the vals are maps."
-  {:added "0.2.0"}
-  [& vals]
-  (if (every? map? vals)
-    (apply merge-with deep-merge vals)
-    (last vals)))
+  "Recursively merges maps.
+
+   If the first parameter is a keyword it tells the strategy to
+   use when merging non-map collections. Options are
+   - :replace, the default, the last value is used
+   - :into, if the value in every map is a collection they are concatenated
+     using into. Thus the type of (first) value is maintained."
+  {:added "0.2.0"
+   :arglists '([strategy & values] [values])}
+  [& values]
+  (let [[values strategy] (if (keyword? (first values))
+                            [(rest values) (first values)]
+                            [values :replace])]
+    (cond
+      (every? map? values)
+      (apply merge-with (partial deep-merge strategy) values)
+
+      (and (= strategy :into) (every? coll? values))
+      (reduce into values)
+
+      :else
+      (last values))))
 
 (defn wrap-into
   "Wrap non-collection values into given collection.
@@ -149,16 +165,18 @@
 
 ;; These are like ones in medley
 
-(defn map-keys [f coll]
+(defn map-keys
   "Map the keys of given associative collection using function."
   {:added "0.2.0"}
+  [f coll]
   (persistent! (reduce-kv (fn [acc k v]
                             (assoc! acc (f k) v))
                           (transient (empty coll)) coll)))
 
-(defn map-vals [f coll]
+(defn map-vals
   "Map the values of given associative collection using function."
   {:added "0.2.0"}
+  [f coll]
   (persistent! (reduce-kv (fn [acc k v]
                             (assoc! acc k (f v)))
                           (transient (empty coll)) coll)))

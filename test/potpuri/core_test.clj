@@ -37,11 +37,17 @@
     (map-of a b c) => {:a 1 :b true :c [:abba :jabba]}))
 
 (facts deep-merge
-  (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
-  (deep-merge {:a 1} {:a 2}) => {:a 2}
-  (deep-merge {:a {:b 1}} {:a {:b 2}}) => {:a {:b 2}}
-  (deep-merge {:a {:b 1}} {:a {:b nil}}) => {:a {:b nil}}
-  (deep-merge {:a 1} nil) => nil)
+  (facts basics
+    (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
+    (deep-merge {:a 1} {:a 2}) => {:a 2}
+    (deep-merge {:a {:b 1}} {:a {:b 2}}) => {:a {:b 2}}
+    (deep-merge {:a {:b 1}} {:a {:b nil}}) => {:a {:b nil}}
+    (deep-merge {:a 1} nil) => nil)
+
+  (facts sequentials
+    (deep-merge {:a [1]} {:a [2]}) => {:a [2]}
+    (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}
+    (deep-merge :into {:a #{:a}} {:a #{:b}}) => {:a #{:b :a}}))
 
 (facts wrap-into
   (wrap-into [] "foo") => ["foo"]
