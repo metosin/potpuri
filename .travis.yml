@@ -3,11 +3,11 @@ language: clojure
 lein: lein2
 script: lein2 $TEST
 env:
-  matrix:
   - TEST=test-clj
   - TEST=test-node
   global:
   - secure: Nr4HXDJbzGxwon/hxL9LbFPGF+UXUvk83VDfGaYlWjyJlPOxn5lf9jjpczjA1m01UXIFhvK/d5DWqO0eMX7zw+aZLeCehPK9imix17kbXqKWi/f9fNqgSuonereIhZ8FMPjamSKkoCUXgz0q5WJ4ER2UHAuXcmQB9wg/MeRJmhY=
+matrix:
   exclude:
     - env: TEST=test-node
       jdk: openjdk6
