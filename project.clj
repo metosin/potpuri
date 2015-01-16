@@ -48,4 +48,4 @@
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha5"]]}}
   :aliases {"all" ["with-profile" "dev:dev,1.7"]
             "test-clj"  ["all" "do" ["test"] ["check"]]
-            "test-node" ["cljsbuild" "test"]})
+            "test-node" ["do" ["cljx"] ["cljsbuild" "test"]]})
