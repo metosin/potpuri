@@ -99,7 +99,7 @@
      (if kvs
        (if (next kvs)
          (recur ret (first kvs) (second kvs) (nnext kvs))
-         (throw (IllegalArgumentException.
+         (throw (#+clj IllegalArgumentException. #+cljs str
                   "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
