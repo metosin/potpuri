@@ -21,12 +21,9 @@
           :src-linenum-anchor-prefix "L"
           :src-uri-mapping {#"target/generated/src" #(str "src/" % "x")}}
 
-  :profiles {:dev {:plugins [[lein-midje "3.1.3"]
-                             [com.keminglabs/cljx "0.5.0"]
+  :profiles {:dev {:plugins [[com.keminglabs/cljx "0.5.0"]
                              [lein-pdo "0.1.1"]
                              [jonase/eastwood "0.2.1"]]
-                   :dependencies [[midje "1.6.3"]
-                                  [criterium "0.4.3"]]}
+                   :dependencies [[criterium "0.4.3"]]}
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha4"]]}}
-  :aliases {"all" ["with-profile" "dev:dev,1.7"]
-            "auto-test" ["pdo" ["cljx" "auto"] ["midje" ":autotest"]]})
+  :aliases {"all" ["with-profile" "dev:dev,1.7"]})

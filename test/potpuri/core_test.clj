@@ -1,76 +1,86 @@
 (ns potpuri.core-test
-  (:require [midje.sweet :refer :all]
+  (:require [clojure.test :refer :all]
             [potpuri.core :refer :all]
-            [criterium.core :refer :all]))
+            [criterium.core :refer [quick-bench]]))
 
-(facts "fn-> & fn->>"
+(deftest fn->test
   (let [inc-x  (fn-> :x inc)
         sum-doubled-vals (fn->> vals (map (partial * 2)) (apply +))
         m {:x 1 :y 2 :z 3}]
-    (inc-x m) => 2
-    (sum-doubled-vals m) => 12))
+    (is (= (inc-x m) 2))
+    (is (= (sum-doubled-vals m) 12))))
 
-(let [original {:a {:b {:c 1
-                        :d 2}
-                    :e 3}}
-      target [[[:a :e] 3]
-              [[:a :b :d] 2]
-              [[:a :b :c] 1]]]
-  (fact path-vals
-    (path-vals original) => (contains target :in-any-order))
-  (fact assoc-in-path-vals
-    (assoc-in-path-vals target) => original))
+(def original {:a {:b {:c 1
+                       :d 2}
+                   :e 3}})
+(def target [[[:a :e] 3]
+             [[:a :b :d] 2]
+             [[:a :b :c] 1]])
 
-(fact "dissoc-in"
-  (let [m {:a {:b1 {:c1 "kikka"
-                    :c2 "kakka"}
-               :b2 "kukka"}}]
-    (dissoc-in m [:a]) => {}
-    (dissoc-in m [:a :b2]) => {:a {:b1 {:c1 "kikka"
-                                        :c2 "kakka"}}}
-    (dissoc-in m [:a :b1 :c2]) => {:a {:b1 {:c1 "kikka"}
-                                       :b2 "kukka"}}
-    (dissoc-in m [nil]) => m))
+(deftest path-vals-test
+  (is (= (set (path-vals original)) (set target))))
 
-(fact "map-of"
+(deftest assoc-in-path-vals-test
+  (is (= (assoc-in-path-vals target) original)))
+
+(def m  {:a {:b1 {:c1 "kikka"
+                  :c2 "kakka"}
+             :b2 "kukka"}})
+
+(deftest dissoc-in-test
+  (is (= (dissoc-in m [:a]) {}))
+
+  (is (= (dissoc-in m [:a :b2])
+         {:a {:b1 {:c1 "kikka"
+                   :c2 "kakka"}}}))
+
+  (is (= (dissoc-in m [:a :b1 :c2])
+         {:a {:b1 {:c1 "kikka"}
+              :b2 "kukka"}}))
+
+  (is (= (dissoc-in m [nil]) m)))
+
+(deftest map-of-test
   (let [a 1 b true c [:abba :jabba]]
-    (map-of a b c) => {:a 1 :b true :c [:abba :jabba]}))
+    (is (= (map-of a b c)
+           {:a 1 :b true :c [:abba :jabba]}))))
 
-(facts deep-merge
-  (facts basics
-    (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
-    (deep-merge {:a 1} {:a 2}) => {:a 2}
-    (deep-merge {:a {:b 1}} {:a {:b 2}}) => {:a {:b 2}}
-    (deep-merge {:a {:b 1}} {:a {:b nil}}) => {:a {:b nil}}
-    (deep-merge {:a 1} nil) => nil)
+(deftest deep-merge-test
+  (testing "basics"
+    (is (= (deep-merge {:a {:c 2}} {:a {:b 1}}) {:a {:b 1 :c 2}}))
+    (is (= (deep-merge {:a 1} {:a 2}) {:a 2}))
+    (is (= (deep-merge {:a {:b 1}} {:a {:b 2}}) {:a {:b 2}}))
+    (is (= (deep-merge {:a {:b 1}} {:a {:b nil}}) {:a {:b nil}}))
+    (is (= (deep-merge {:a 1} nil) nil))
+    )
 
-  (facts sequentials
-    (deep-merge {:a [1]} {:a [2]}) => {:a [2]}
-    (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}
-    (deep-merge :into {:a #{:a}} {:a #{:b}}) => {:a #{:b :a}}))
+  (testing "sequentials"
+    (is (= (deep-merge {:a [1]} {:a [2]}) {:a [2]}))
+    (is (= (deep-merge :into {:a [1]} {:a [2]}) {:a [1 2]}))
+    (is (= (deep-merge :into {:a #{:a}} {:a #{:b}}) {:a #{:b :a}}))))
 
-(facts wrap-into
-  (wrap-into [] "foo") => ["foo"]
-  (wrap-into [] ["a" "b"]) => ["a" "b"]
-  (wrap-into #{} "a") => #{"a"}
-  (wrap-into #{} ["a" "b"]) => #{"a" "b"})
+(deftest wrap-into-test
+  (is (= (wrap-into [] "foo") ["foo"]))
+  (is (= (wrap-into [] ["a" "b"]) ["a" "b"]))
+  (is (= (wrap-into #{} "a") #{"a"}))
+  (is (= (wrap-into #{} ["a" "b"]) #{"a" "b"})))
 
-(facts assoc-if
-  (assoc-if {} :a 5) => {:a 5}
-  (assoc-if {:a 5} :b nil) => {:a 5}
-  (assoc-if {:a 5} :a nil) => {:a 5})
+(deftest assoc-if-test
+  (is (= (assoc-if {} :a 5) {:a 5}))
+  (is (= (assoc-if {:a 5} :b nil) {:a 5}))
+  (is (= (assoc-if {:a 5} :a nil) {:a 5})))
 
-(facts conjv
-  (conjv [1 2] 3) => [1 2 3]
-  (update-in {:a [1 2]} [:a] conjv 3) => {:a [1 2 3]}
-  (-> [1 2] (conjv 3)) => [1 2 3]
-  (fact "conjv to nil will create vec instead of seq"
-    (:a (update-in {} [:a] conjv 1)) => vector?))
+(deftest conjv-test
+  (is (= (conjv [1 2] 3) [1 2 3]))
+  (is (= (update-in {:a [1 2]} [:a] conjv 3) {:a [1 2 3]}))
+  (is (= (-> [1 2] (conjv 3)) [1 2 3]))
+  (testing "conjv to nil will create vec instead of seq"
+    (is (vector? (:a (update-in {} [:a] conjv 1))))))
 
-(facts consv
-  (consv [2 3] 1) => [1 2 3]
-  (update-in {:a [2 3]} [:a] consv 1) => {:a [1 2 3]}
-  (-> [2 3] (consv 1)) => [1 2 3])
+(deftest consv-test
+  (is (= (consv [2 3] 1) [1 2 3]))
+  (is (= (update-in {:a [2 3]} [:a] consv 1) {:a [1 2 3]}))
+  (is (= (-> [2 3] (consv 1)) [1 2 3])))
 
 (comment
   (quick-bench (into [1] [2 3 4]))
@@ -79,49 +89,49 @@
 (def test-coll [{:id 1 :foo "bar"}
                 {:id 2 :foo "foo"}])
 
-(facts find-index
-  (fact "map based where"
-    (find-index test-coll {:id 1}) => 0
-    (find-index test-coll {:id 2}) => 1
-    (find-index test-coll {:id 2 :foo "foo"}) => 1)
+(deftest find-index-test
+  (testing "map based where"
+    (is (= (find-index test-coll {:id 1}) 0))
+    (is (= (find-index test-coll {:id 2}) 1))
+    (is (= (find-index test-coll {:id 2 :foo "foo"}) 1)))
 
-  (fact "predicate where"
-    (find-index test-coll (comp even? :id)) => 1)
+  (testing "predicate where"
+    (is (= (find-index test-coll (comp even? :id)) 1)))
 
-  (fact "keyword where"
-    (find-index test-coll :id) => 0)
+  (testing "keyword where"
+    (is (= (find-index test-coll :id) 0)))
 
-  (fact "set where"
-    (find-index ["a" "b" "c"] #{"c"}) => 2)
+  (testing "set where"
+    (is (= (find-index ["a" "b" "c"] #{"c"}) 2)))
 
-  (fact "value identity where"
-    (find-index [4 3 2] 3) => 1)
+  (testing "value identity where"
+    (is (= (find-index [4 3 2] 3) 1)))
 
-  (fact "-> syntax"
-    (-> test-coll (find-index {:id 2})) => 1)
+  (testing "-> syntax"
+    (is (= (-> test-coll (find-index {:id 2})) 1)))
 
-  (facts "different coll types"
-    (fact "seq"
-      (find-index (seq test-coll) {:id 1}) => 0)))
+  (testing "different coll types"
+    (testing "seq"
+      (is (= (find-index (seq test-coll) {:id 1}) 0)))))
 
-(facts find-first
-  (find-first test-coll {:id 2}) => (nth test-coll 1)
-  (-> test-coll (find-first {:id 2})) => (nth test-coll 1))
+(deftest find-first-test
+  (is (= (find-first test-coll {:id 2}) (nth test-coll 1)))
+  (is (= (-> test-coll (find-first {:id 2})) (nth test-coll 1))))
 
-(facts assoc-first
-  (assoc-first test-coll {:id 2} {:id 2 :foo "zzz"}) => (assoc-in test-coll [1 :foo] "zzz")
-  (fact "seq"
-    (assoc-first (seq test-coll) {:id 2} {:id 2 :foo "zzz"}) => (seq (assoc-in test-coll [1 :foo] "zzz"))))
+(deftest assoc-first-test
+  (is (= (assoc-first test-coll {:id 2} {:id 2 :foo "zzz"}) (assoc-in test-coll [1 :foo] "zzz")))
+  (testing "seq"
+    (is (= (assoc-first (seq test-coll) {:id 2} {:id 2 :foo "zzz"}) (seq (assoc-in test-coll [1 :foo] "zzz"))))))
 
-(facts update-first
-  (update-first test-coll {:id 2} #(assoc % :foo "zzz")) => (assoc-in test-coll [1 :foo] "zzz")
-  (fact "rest args"
-    (update-first test-coll {:id 2} assoc :foo "zzz") => (assoc-in test-coll [1 :foo] "zzz"))
-  (fact "seq"
-    (update-first (seq test-coll) {:id 2} assoc :foo "zzz") => (seq (assoc-in test-coll [1 :foo] "zzz"))))
+(deftest update-first-test
+  (is (= (update-first test-coll {:id 2} #(assoc % :foo "zzz")) (assoc-in test-coll [1 :foo] "zzz")))
+  (testing "rest args"
+    (is (= (update-first test-coll {:id 2} assoc :foo "zzz") (assoc-in test-coll [1 :foo] "zzz"))))
+  (testing "seq"
+    (is (= (update-first (seq test-coll) {:id 2} assoc :foo "zzz") (seq (assoc-in test-coll [1 :foo] "zzz"))))))
 
-(facts map-keys
-  (map-keys keyword {"a" 1 "b" 2}) => {:a 1 :b 2})
+(deftest map-keys-test
+  (is (= (map-keys keyword {"a" 1 "b" 2}) {:a 1 :b 2})))
 
-(facts map-keys
-  (map-vals inc {:a 1 :b 2}) => {:a 2 :b 3})
+(deftest map-keys-test
+  (is (= (map-vals inc {:a 1 :b 2}) {:a 2 :b 3})))
