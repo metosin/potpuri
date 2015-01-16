@@ -108,11 +108,16 @@
     (fn? where)
     where
 
+    ; fn? and map? first as map also implements IFn
     (map? where)
     (fn [v]
       (every? (fn [[where-k where-v]]
                 (= (get v where-k) where-v))
               where))
+
+    ; Keywords, sets, ...
+    (ifn? where)
+    where
 
     :default
     (fn [v]
@@ -125,6 +130,7 @@
    - a fn, it's used as predicate as is
    - a map, a predicate is created which checks if value in collection has
      same values for each key in where map
+   - Something which implements IFn, e.g. keywords and sets, is used as is
    - any value, a predicate is created which checks if value is identitical
 
    Usable with ->"
@@ -143,6 +149,35 @@
   [coll where]
   (let [pred (create-predicate where)]
     (some #(if (pred %) %) coll)))
+
+(defn assoc-first
+  "Finds the first element in collection matching where parameter and
+   replaces that with v.
+
+   Implementation depends on collection type."
+  {:added "0.2.1"}
+  [coll where v]
+  (let [pred (create-predicate where)]
+    (cond
+      (vector? coll) (assoc coll (find-index coll pred) v)
+      :default (map (fn [x]
+                      (if (pred x) v x))
+                    coll))))
+
+(defn update-first
+  "Finds the first element in collection matchin where parameter
+   and updates that using f. F is called with current value and
+   rest of update-first params.
+
+   Implementation depends on collection type."
+  {:added "0.2.1"}
+  [coll where f & args]
+  (let [pred (create-predicate where)]
+    (cond
+      (vector? coll) (apply update-in coll [(find-index coll pred)] f args)
+      :default (map (fn [x]
+                      (if (pred x) (apply f x args) x))
+                    coll))))
 
 (defn conjv
   "Append an element to a collection. If collection is nil,

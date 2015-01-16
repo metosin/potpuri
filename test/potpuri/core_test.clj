@@ -87,14 +87,38 @@
 
   (fact "predicate where"
     (find-index test-coll (comp even? :id)) => 1)
+
+  (fact "keyword where"
+    (find-index test-coll :id) => 0)
+
+  (fact "set where"
+    (find-index ["a" "b" "c"] #{"c"}) => 2)
+
   (fact "value identity where"
     (find-index [4 3 2] 3) => 1)
 
-  (-> test-coll (find-index {:id 2})) => 1)
+  (fact "-> syntax"
+    (-> test-coll (find-index {:id 2})) => 1)
+
+  (facts "different coll types"
+    (fact "seq"
+      (find-index (seq test-coll) {:id 1}) => 0)))
 
 (facts find-first
   (find-first test-coll {:id 2}) => (nth test-coll 1)
   (-> test-coll (find-first {:id 2})) => (nth test-coll 1))
+
+(facts assoc-first
+  (assoc-first test-coll {:id 2} {:id 2 :foo "zzz"}) => (assoc-in test-coll [1 :foo] "zzz")
+  (fact "seq"
+    (assoc-first (seq test-coll) {:id 2} {:id 2 :foo "zzz"}) => (seq (assoc-in test-coll [1 :foo] "zzz"))))
+
+(facts update-first
+  (update-first test-coll {:id 2} #(assoc % :foo "zzz")) => (assoc-in test-coll [1 :foo] "zzz")
+  (fact "rest args"
+    (update-first test-coll {:id 2} assoc :foo "zzz") => (assoc-in test-coll [1 :foo] "zzz"))
+  (fact "seq"
+    (update-first (seq test-coll) {:id 2} assoc :foo "zzz") => (seq (assoc-in test-coll [1 :foo] "zzz"))))
 
 (facts map-keys
   (map-keys keyword {"a" 1 "b" 2}) => {:a 1 :b 2})
