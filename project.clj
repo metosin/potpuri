@@ -31,7 +31,9 @@
                         :source-map "target/generated/js/tests.map.js"
                         :output-dir "target/generated/js/out"
                         :optimizations :simple
-                        :cache-analysis true}}]}
+                        :cache-analysis true}}]
+   :test-commands
+   {"unit" ["node" "target/generated/js/tests.js"]}}
 
   :codox {:src-dir-uri "http://github.com/metosin/potpuri/blob/master/"
           :src-linenum-anchor-prefix "L"
@@ -43,5 +45,7 @@
                              [lein-cljsbuild "1.0.4"]]
                    :dependencies [[criterium "0.4.3"]
                                   [org.clojure/clojurescript "0.0-2665"]]}
-             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha4"]]}}
-  :aliases {"all" ["with-profile" "dev:dev,1.7"]})
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha5"]]}}
+  :aliases {"all" ["with-profile" "dev:dev,1.7"]
+            "test-clj"  ["all" "do" ["test"] ["check"]]
+            "test-node" ["cljsbuild" "test"]})
