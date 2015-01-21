@@ -21,6 +21,6 @@ lein doc
 
 ## License
 
-Copyright © 2014 Metosin Oy
+Copyright © 2014 [Metosin Oy](http://www.metosin.fi)
 
 Distributed under the Eclipse Public License, the same as Clojure.
