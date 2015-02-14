@@ -3,8 +3,9 @@
 rev=$(git rev-parse HEAD)
 
 if [[ ! -d doc ]]; then
-    git clone --branch gh-pages git@github.com:metosin/potpuri.git doc
+    git clone --branch gh-pages $(git config --get remote.origin.url) doc
 fi
+
 (
 cd doc
 git pull
