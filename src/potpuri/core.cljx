@@ -200,21 +200,41 @@
 
 ;; These are like ones in medley
 
+(defn- editable? [coll]
+  #+clj (instance? clojure.lang.IEditableCollection coll)
+  #+cljs (satisfies? cljs.core.IEditableCollection coll))
+
+(defn- reduce-map [f coll]
+  (if (editable? coll)
+    (persistent! (reduce-kv (f assoc!) (transient (empty coll)) coll))
+    (reduce-kv (f assoc) (empty coll) coll)))
+
 (defn map-keys
   "Map the keys of given associative collection using function."
   {:added "0.2.0"}
   [f coll]
-  (persistent! (reduce-kv (fn [acc k v]
-                            (assoc! acc (f k) v))
-                          (transient (empty coll)) coll)))
+  (reduce-map (fn [xf] (fn [m k v]
+                         (xf m (f k) v)))
+              coll))
 
 (defn map-vals
   "Map the values of given associative collection using function."
   {:added "0.2.0"}
   [f coll]
-  (persistent! (reduce-kv (fn [acc k v]
-                            (assoc! acc k (f v)))
-                          (transient (empty coll)) coll)))
+  (reduce-map (fn [xf] (fn [m k v]
+                         (xf m k (f v))))
+              coll))
 
-;; filter-keys, filter-vals, and keep-* are unnecessary I think
-;; (comp pred key) and (comp pred val) can be used with normal filter and keep
+(defn filter-keys
+  {:added "0.3.0"}
+  [pred coll]
+  (reduce-map (fn [xf] (fn [m k v]
+                         (if (pred k) (xf m k v) m)))
+              coll))
+
+(defn filter-vals
+  {:added "0.3.0"}
+  [pred coll]
+  (reduce-map (fn [xf] (fn [m k v]
+                         (if (pred v) (xf m k v) m)))
+              coll))
