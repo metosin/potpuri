@@ -133,11 +133,5 @@
 (deftest map-keys-test
   (is (= (p/map-keys keyword {"a" 1 "b" 2}) {:a 1 :b 2})))
 
-(deftest map-keys-test
+(deftest map-vals-test
   (is (= (p/map-vals inc {:a 1 :b 2}) {:a 2 :b 3})))
-
-#+cljs
-(do
-  (set! *print-newline* false)
-  (set-print-fn! js/console.log)
-  (test/run-tests))
