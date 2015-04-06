@@ -29,11 +29,9 @@
           :src-uri-mapping {#"target/generated/src" #(str "src/" % "x")}}
 
   :profiles {:dev {:plugins [[com.keminglabs/cljx "0.6.0"]
-                             [lein-pdo "0.1.1"]
-                             [jonase/eastwood "0.2.1"]
-                             [lein-cljsbuild "1.0.4"]]
+                             [jonase/eastwood "0.2.1"]]
                    :dependencies [[criterium "0.4.3"]
                                   [org.clojure/clojurescript "0.0-3126"]]}
-             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha5"]]}}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0-alpha6"]]}}
   :aliases {"all" ["with-profile" "dev:dev,1.7"]
             "test-clj"  ["all" "do" ["test"] ["check"]]})
