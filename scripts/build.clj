@@ -1,12 +1,8 @@
 (require 'cljs.closure)
 
-(defrecord SourcePaths [paths]
-  cljs.closure/Compilable
-  (-compile [_ opts]
-    (mapcat #(cljs.closure/-compile % opts) paths)))
-
 (cljs.closure/build
-  (SourcePaths. ["src" "test" "target/generated/src"])
+  ; Includes :source-paths and :test-paths already
+  "test"
   {:output-to "target/generated/js/out/tests.js"
    :main "potpuri.runner"
    :source-map "target/generated/js/out/tests.map.js"
