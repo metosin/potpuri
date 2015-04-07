@@ -1,4 +1,4 @@
-## 0.3.0 (x.4.2015)
+## 0.2.2 (7.4.2015)
 
 - `map-keys` and `map-vals` should now work with records
 - Added `filter-keys` and `filter-vals`

@@ -226,14 +226,14 @@
               coll))
 
 (defn filter-keys
-  {:added "0.3.0"}
+  {:added "0.2.2"}
   [pred coll]
   (reduce-map (fn [xf] (fn [m k v]
                          (if (pred k) (xf m k v) m)))
               coll))
 
 (defn filter-vals
-  {:added "0.3.0"}
+  {:added "0.2.2"}
   [pred coll]
   (reduce-map (fn [xf] (fn [m k v]
                          (if (pred v) (xf m k v) m)))
