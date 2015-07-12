@@ -1,3 +1,7 @@
+## 0.2.3 (12.7.2015)
+
+- Added `if-all-let`
+
 ## 0.2.2 (7.4.2015)
 
 - `map-keys` and `map-vals` should now work with records
