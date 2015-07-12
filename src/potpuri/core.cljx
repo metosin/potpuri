@@ -2,20 +2,20 @@
   #+cljs (:require-macros potpuri.core))
 
 (defmacro fn->
-  "Creates a function that threads on input with some->"
+  "Creates a function that threads on input with `some->`"
   {:added "0.1.0"}
   [& body] `(fn [x#] (some-> x# ~@body)))
 
 (defmacro fn->>
-  "Creates a function that threads on input with some->>"
+  "Creates a function that threads on input with `some->>`"
   {:added "0.1.0"}
   [& body] `(fn [x#] (some->> x# ~@body)))
 
 (defmacro if-all-let
-  "bindings => [binding-form test, binding-form test ...]
+  "`bindings => [binding-form test, binding-form test ...]`
 
-  If all tests are true, evaluates then with binding-forms bound to the values of
-  tests, if not, yields else."
+  If all tests are `true`, evaluates then with binding-forms bound to the values of
+  tests, if not, yields `else.`"
   {:added "0.2.3"}
   ([bindings then] `(if-all-let ~bindings ~then nil))
   ([bindings then else]
@@ -45,7 +45,7 @@
 ;; https://github.com/clojure/core.incubator/blob/master/src/main/clojure/clojure/core/incubator.clj
 (defn dissoc-in
   "Dissociates an entry from a nested associative structure returning a new
-  nested structure. keys is a sequence of keys. Any empty maps that result
+  nested structure. `keys` is a sequence of keys. Any empty maps that result
   will not be present in the new structure."
   {:added "0.1.0"}
   [m [k & ks :as keys]]
@@ -59,7 +59,7 @@
     (dissoc m k)))
 
 (defmacro map-of
-  "creates map with symbol names as keywords as keys and
+  "Creates map with symbol names as keywords as keys and
    symbol values as values."
   {:added "0.1.0"}
   [& syms]
@@ -70,9 +70,16 @@
 
    If the first parameter is a keyword it tells the strategy to
    use when merging non-map collections. Options are
-   - :replace, the default, the last value is used
-   - :into, if the value in every map is a collection they are concatenated
-     using into. Thus the type of (first) value is maintained."
+
+   - `:replace`, the default, the last value is used
+   - `:into`, if the value in every map is a collection they are concatenated
+     using into. Thus the type of (first) value is maintained.
+
+   Examples:
+
+       (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
+       (deep-merge :replace {:a [1]} {:a [2]}) => {:a [2]}
+       (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}"
   {:added "0.2.0"
    :arglists '([strategy & values] [values])}
   [& values]
@@ -94,9 +101,10 @@
    Collections are only put into the collection (non-wrapped).
 
    Examples:
-   (wrap-into [] :a) => [:a]
-   (wrap-into [] [:a]) => [:a]
-   (wrap-into #{} [:a]) => #{:a}"
+
+       (wrap-into [] :a) => [:a]
+       (wrap-into [] [:a]) => [:a]
+       (wrap-into #{} [:a]) => #{:a}"
   {:added "0.2.0"}
   [coll v]
   (into coll (if (coll? v)
@@ -104,7 +112,7 @@
                [v])))
 
 (defn assoc-if
-  "Assoc key-values pairs with non-nil values into map."
+  "Assoc key-value pairs with non-nil values into map."
   {:added "0.2.0"}
   ([m key val] (if-not (nil? val) (assoc m key val) m))
   ([m key val & kvs]
@@ -140,13 +148,21 @@
   "Find index of vector which matches the where parameter.
 
    If where parameter is:
+
    - a fn, it's used as predicate as is
    - a map, a predicate is created which checks if value in collection has
      same values for each key in where map
    - Something which implements IFn, e.g. keywords and sets, is used as is
    - any value, a predicate is created which checks if value is identitical
 
-   Usable with ->"
+   Examples:
+
+       (find-index [1 2 3] even?) => 1
+       (find-index [{:id 1} {:id 2}] {:id 2}) => 1
+       (find-index [{:a 1} {:b 2}] :b) => 1
+       (find-index [1 2 3] #{3}) => 2
+       (find-index [1 2 3] 3) => 2
+       (-> [1 2 3] (find-index odd?)) => 0"
   {:added "0.2.0"}
   [coll where]
   (let [pred (create-predicate where)]
@@ -155,9 +171,22 @@
 (defn find-first
   "Find first value from collection which mathes the where parameter.
 
-   Check find-index for documentation on where parameter.
+   If where parameter is:
 
-   Usable with ->"
+   - a fn, it's used as predicate as is
+   - a map, a predicate is created which checks if value in collection has
+     same values for each key in where map
+   - Something which implements IFn, e.g. keywords and sets, is used as is
+   - any value, a predicate is created which checks if value is identitical
+
+   Examples:
+
+       (find-first [1 2 3] even?) => 2
+       (find-index [{:id 1} {:id 2, :foo :bar}] {:id 2}) => {:id 2, :foo :bar}
+       (find-index [{:a 1} {:b 2, :foo :bar}] :b) => {:b 2, :foo :bar}
+       (find-index [1 2 3] #{3}) => 3
+       (find-index [1 2 3] 3) => 3
+       (-> [1 2 3] (find-first odd?)) => 1"
   {:added "0.2.0"}
   [coll where]
   (let [pred (create-predicate where)]
@@ -165,7 +194,7 @@
 
 (defn assoc-first
   "Finds the first element in collection matching where parameter and
-   replaces that with v.
+   replaces that with `v.`
 
    Implementation depends on collection type."
   {:added "0.2.1"}
@@ -178,8 +207,8 @@
                     coll))))
 
 (defn update-first
-  "Finds the first element in collection matchin where parameter
-   and updates that using f. F is called with current value and
+  "Finds the first element in collection matching the where parameter
+   and updates that using `f.` `f` is called with current value and
    rest of update-first params.
 
    Implementation depends on collection type."
@@ -192,19 +221,32 @@
                       (if (pred x) (apply f x args) x))
                     coll))))
 
-(defn conjv
-  "Append an element to a collection. If collection is nil,
-   creates vector instead of sequence.
+(def ^:private conjv' (fnil conj []))
 
-   Usable with update-in, ->"
+(defn conjv
+  "Append an element to a collection. If collection is `nil`, creates vector
+   instead of sequence. The appending might happen on different places
+   depending on the type of collection.
+
+   Examples:
+
+       (conjv nil 5) => [5]
+       (conjv [1] 2) => [1 2]
+       (update-in {} [:a] conjv 5) => {:a [5]}
+       (-> [] (conjv 5)) => [5]"
   {:added "0.2.0"}
   [coll el]
-  ((fnil conj []) coll el))
+  (conjv' coll el))
 
 (defn consv
   "Prepend an element to a collection. Returns a vector.
 
-   Usable with update-in, ->"
+   Examples:
+
+       (consv nil 1) => [1]
+       (consv [2] 1) => [1 2]
+       (update-in {:a 2} [:a] consv 1) => {:a [1 2]}
+       (-> [2] (consv 5)) => [1 2]"
   {:added "0.2.0"}
   [coll el]
   (apply vector el coll))
@@ -239,6 +281,7 @@
               coll))
 
 (defn filter-keys
+  "Filter given associative collection using function on the keys."
   {:added "0.2.2"}
   [pred coll]
   (reduce-map (fn [xf] (fn [m k v]
@@ -246,6 +289,7 @@
               coll))
 
 (defn filter-vals
+  "Filter given associative collection using function on the values."
   {:added "0.2.2"}
   [pred coll]
   (reduce-map (fn [xf] (fn [m k v]

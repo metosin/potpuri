@@ -6,7 +6,7 @@
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies [[org.clojure/clojure "1.6.0"]]
-  :plugins [[codox "0.8.10"]]
+  :plugins [[codox "0.8.13"]]
 
   :cljx {:builds [{:rules :clj
                    :source-paths ["src"]
@@ -26,7 +26,8 @@
 
   :codox {:src-dir-uri "http://github.com/metosin/potpuri/blob/master/"
           :src-linenum-anchor-prefix "L"
-          :src-uri-mapping {#"target/generated/src" #(str "src/" % "x")}}
+          :src-uri-mapping {#"target/generated/src" #(str "src/" % "x")}
+          :defaults {:doc/format :markdown}}
 
   :profiles {:dev {:plugins [[com.keminglabs/cljx "0.6.0"]
                              [jonase/eastwood "0.2.1"]]
