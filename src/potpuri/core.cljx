@@ -1,4 +1,5 @@
-(ns potpuri.core)
+(ns potpuri.core
+  #+cljs (:require-macros potpuri.core))
 
 (defmacro fn->
   "Creates a function that threads on input with some->"

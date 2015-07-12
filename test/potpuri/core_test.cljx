@@ -1,6 +1,6 @@
 (ns potpuri.core-test
   (:require [#+clj clojure.test #+cljs cljs.test :as test #+clj :refer #+cljs :refer-macros [deftest is testing]]
-            [potpuri.core :as p :include-macros true]
+            [potpuri.core :as p]
             #+clj [criterium.core :refer [quick-bench]]))
 
 (deftest fn->test
