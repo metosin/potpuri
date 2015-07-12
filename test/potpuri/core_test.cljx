@@ -10,6 +10,12 @@
     (is (= (inc-x m) 2))
     (is (= (sum-doubled-vals m) 12))))
 
+(deftest if-all-let
+  (is (true? (p/if-all-let [a 1] true)))
+  (is (true? (p/if-all-let [a 1 b 2] true)))
+  (is (= :else (p/if-all-let [a nil b 2] :true :else)))
+  (is (nil? (p/if-all-let [a 1 b nil] true))))
+
 (def original {:a {:b {:c 1
                        :d 2}
                    :e 3}})

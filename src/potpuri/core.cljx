@@ -11,6 +11,18 @@
   {:added "0.1.0"}
   [& body] `(fn [x#] (some->> x# ~@body)))
 
+(defmacro if-all-let
+  "bindings => [binding-form test, binding-form test ...]
+
+  If all tests are true, evaluates then with binding-forms bound to the values of
+  tests, if not, yields else."
+  {:added "0.2.3"}
+  ([bindings then] `(if-all-let ~bindings ~then nil))
+  ([bindings then else]
+   (reduce (fn [subform binding]
+             `(if-let [~@binding] ~subform ~else))
+           then (reverse (partition 2 bindings)))))
+
 (defn path-vals
   "Returns vector of tuples containing path vector to the value and the value."
   {:added "0.1.0"}
