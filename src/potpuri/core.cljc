@@ -1,5 +1,5 @@
 (ns potpuri.core
-  #+cljs (:require-macros potpuri.core))
+  #?(:cljs (:require-macros potpuri.core)))
 
 (defmacro fn->
   "Creates a function that threads on input with `some->`"
@@ -120,8 +120,9 @@
      (if kvs
        (if (next kvs)
          (recur ret (first kvs) (second kvs) (nnext kvs))
-         (throw (#+clj IllegalArgumentException. #+cljs str
-                  "assoc expects even number of arguments after map/vector, found odd number")))
+         (throw
+           #?(:clj (IllegalArgumentException. "assoc expects even number of arguments after map/vector, found odd number")
+              :cljs "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
 (defn- create-predicate [where]
@@ -256,8 +257,8 @@
 ;; These are like ones in medley
 
 (defn- editable? [coll]
-  #+clj (instance? clojure.lang.IEditableCollection coll)
-  #+cljs (satisfies? cljs.core.IEditableCollection coll))
+  #?(:clj  (instance? clojure.lang.IEditableCollection coll)
+     :cljs (satisfies? cljs.core.IEditableCollection coll)))
 
 (defn- reduce-map [f coll]
   (if (editable? coll)

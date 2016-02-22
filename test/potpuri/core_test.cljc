@@ -1,7 +1,7 @@
 (ns potpuri.core-test
-  (:require [#+clj clojure.test #+cljs cljs.test :as test #+clj :refer #+cljs :refer-macros [deftest is testing]]
-            [potpuri.core :as p]
-            #+clj [criterium.core :refer [quick-bench]]))
+  (:require #?(:clj [clojure.test :refer :all]
+                    :cljs [cljs.test :refer-macros [deftest is testing]])
+            [potpuri.core :as p]))
 
 (deftest fn->test
   (let [inc-x  (p/fn-> :x inc)
@@ -88,10 +88,6 @@
   (is (= (update-in {:a [2 3]} [:a] p/consv 1) {:a [1 2 3]}))
   (is (= (-> [2 3] (p/consv 1)) [1 2 3])))
 
-(comment
-  (quick-bench (into [1] [2 3 4]))
-  (quick-bench (apply vector 1 [ 2 3 4])))
-
 (def test-coll [{:id 1 :foo "bar"}
                 {:id 2 :foo "foo"}])
 
@@ -151,4 +147,4 @@
 (deftest index-by-test
   (is (= {1 {:id 1 :v "foo"}
           2 {:id 2 :v "bar"}}
-         (p/index-by [{:id 1 :v "foo"} {:id 2 :v "bar"}]))))
+         (p/index-by :id [{:id 1 :v "foo"} {:id 2 :v "bar"}]))))

@@ -5,7 +5,7 @@
   "test"
   {:output-to "target/generated/js/out/tests.js"
    :main "potpuri.runner"
-   :source-map "target/generated/js/out/tests.map.js"
+   :source-map true
    :output-dir "target/generated/js/out"
    :optimizations :none
    :target :nodejs})

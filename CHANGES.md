@@ -1,3 +1,8 @@
+## Unreleased
+
+- Updated to use Cljc (drops Clojure 1.6 support)
+- Added `index-by`
+
 ## 0.2.3 (12.7.2015)
 
 - Added `if-all-let`
