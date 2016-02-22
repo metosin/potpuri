@@ -141,3 +141,9 @@
 
 (deftest map-vals-test
   (is (= (p/map-vals inc {:a 1 :b 2}) {:a 2 :b 3})))
+
+(deftest filter-keys-test
+  (is (= {:a 1} (p/filter-keys #{:a} {:a 1 :b 2}))))
+
+(deftest filter-vals-test
+  (is (= {:a 1} (p/filter-vals #{1} {:a 1 :b 2}))))
