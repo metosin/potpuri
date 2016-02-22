@@ -295,3 +295,12 @@
   (reduce-map (fn [xf] (fn [m k v]
                          (if (pred v) (xf m k v) m)))
               coll))
+
+(defn index-by
+  "Returns a map of the elements of coll keyed by the result of
+  f on each element. The value at each key will the last item
+  for given f result."
+  {:added "0.3.0"}
+  [f coll]
+  ; FIXME: perf test against reduce+transient and zipmap
+  (into {} (map (juxt f identity) coll)))

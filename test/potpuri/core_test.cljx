@@ -147,3 +147,8 @@
 
 (deftest filter-vals-test
   (is (= {:a 1} (p/filter-vals #{1} {:a 1 :b 2}))))
+
+(deftest index-by-test
+  (is (= {1 {:id 1 :v "foo"}
+          2 {:id 2 :v "bar"}}
+         (p/index-by [{:id 1 :v "foo"} {:id 2 :v "bar"}]))))
