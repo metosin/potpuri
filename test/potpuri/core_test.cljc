@@ -11,6 +11,10 @@
     (is (= (sum-doubled-vals m) 12))))
 
 (deftest condas->test
+  (is (= 3
+         (p/condas-> 1 number
+                     (= 1 number) (inc number)
+                     (= 2 number) (inc number))))
   (is (= 2
          (p/condas-> 1 number
                      (= 1 number) (inc number)
