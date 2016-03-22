@@ -11,6 +11,16 @@
   {:added "0.1.0"}
   [& body] `(fn [x#] (some->> x# ~@body)))
 
+;; https://blog.juxt.pro/posts/condas.html
+(defmacro condas->
+  "A mixture of cond-> and as-> allowing more flexibility in the test and step forms"
+  [expr name & clauses]
+  (assert (even? (count clauses)))
+  (let [pstep (fn [[test step]] `(if ~test ~step ~name))]
+    `(let [~name ~expr
+           ~@(interleave (repeat name) (map pstep (partition 2 clauses)))]
+       ~name)))
+
 (defmacro if-all-let
   "`bindings => [binding-form test, binding-form test ...]`
 

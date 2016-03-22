@@ -10,6 +10,12 @@
     (is (= (inc-x m) 2))
     (is (= (sum-doubled-vals m) 12))))
 
+(deftest condas->test
+  (is (= 2
+         (p/condas-> 1 number
+                     (= 1 number) (inc number)
+                     (= 1 number) (inc number)))))
+
 (deftest if-all-let
   (is (true? (p/if-all-let [a 1] true)))
   (is (true? (p/if-all-let [a 1 b 2] true)))
