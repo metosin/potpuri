@@ -1,7 +1,8 @@
-## Unreleased
+## 0.3.0 (26.4.2016)
 
 - Updated to use Cljc (drops Clojure 1.6 support)
 - Added `index-by`
+- Added `condas->`
 
 ## 0.2.3 (12.7.2015)
 
