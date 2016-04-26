@@ -14,6 +14,7 @@
 ;; https://blog.juxt.pro/posts/condas.html
 (defmacro condas->
   "A mixture of cond-> and as-> allowing more flexibility in the test and step forms"
+  {:added "0.3.0"}
   [expr name & clauses]
   (assert (even? (count clauses)))
   (let [pstep (fn [[test step]] `(if ~test ~step ~name))]
