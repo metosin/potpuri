@@ -316,3 +316,16 @@
   [f coll]
   ; FIXME: perf test against reduce+transient and zipmap
   (into {} (map (juxt f identity) coll)))
+
+(defn zip
+  "Returns a sequence of vectors where the i-th vector contains
+  the i-th element from each of the argument collections. The returned
+  sequence is as long as the shortest argument.
+
+  Example:
+
+      (zip [1 2 3] [:a :b :c])  => ([1 :a] [2 :b] [3 :c])
+      (zip [1] [1 2] [1 2 3]) => ([1 1 1])"
+  {:added "0.3.1"}
+  [& colls]
+  (apply map vector colls))
