@@ -158,3 +158,6 @@
   (is (= {1 {:id 1 :v "foo"}
           2 {:id 2 :v "bar"}}
          (p/index-by :id [{:id 1 :v "foo"} {:id 2 :v "bar"}]))))
+
+(deftest zip-test
+  (is (= [[1 :a] [2 :b] [3 :c]] (p/zip [1 2 3] [:a :b :c]))))
