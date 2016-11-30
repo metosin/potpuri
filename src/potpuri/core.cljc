@@ -326,6 +326,6 @@
 
       (zip [1 2 3] [:a :b :c])  => ([1 :a] [2 :b] [3 :c])
       (zip [1] [1 2] [1 2 3]) => ([1 1 1])"
-  {:added "0.3.1"}
+  {:added "0.4.0"}
   [& colls]
   (apply map vector colls))

@@ -1,3 +1,7 @@
+## 0.4.0 (30.11.2016)
+
+- Added `zip`
+
 ## 0.3.0 (26.4.2016)
 
 - Updated to use Cljc (drops Clojure 1.6 support)
