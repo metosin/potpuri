@@ -1,19 +1,19 @@
 (defproject metosin/potpuri "0.4.0"
-  :description "Metosin potpuri"
+  :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
-  :plugins [[codox "0.8.13"]]
+  :plugins [[lein-codox "0.10.2"]]
 
   :source-paths ["src" "target/generated/src"]
   :test-paths ["test" "target/generated/test"]
 
-  :codox {:src-dir-uri "http://github.com/metosin/potpuri/blob/master/"
-          :src-linenum-anchor-prefix "L"
-          :defaults {:doc/format :markdown}}
+  :codox {:output-path "doc"
+          :source-uri "https://github.com/metosin/potpuri/blob/{version}/{filepath}#L{line}"
+          :metadata {:doc/format :markdown}}
 
   :profiles {:dev {:plugins [[jonase/eastwood "0.2.1"]]
                    :dependencies [[criterium "0.4.4"]

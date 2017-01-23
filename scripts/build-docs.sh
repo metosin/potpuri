@@ -11,7 +11,7 @@ cd doc
 git pull
 )
 
-lein doc
+lein codox
 cd doc
 git add --all
 git commit -m "Build docs from ${rev}."
