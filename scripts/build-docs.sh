@@ -17,7 +17,7 @@ if [[ -z $(git branch -r --list origin/gh-pages) ]]; then
     git commit --allow-empty -m "Init"
     git push -u origin gh-pages
     )
-elif [[ ! -d gh-pages ]]; then
+elif [[ ! -d "$repodir" ]]; then
     git clone --branch gh-pages "${remoteurl}" "$repodir"
 else
     (
