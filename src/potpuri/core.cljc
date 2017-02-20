@@ -86,15 +86,19 @@
    - `:into`, if the value in every map is a collection they are concatenated
      using into. Thus the type of (first) value is maintained.
 
+   `nil`'s are ignored.
+
    Examples:
 
        (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
        (deep-merge :replace {:a [1]} {:a [2]}) => {:a [2]}
-       (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}"
+       (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}
+       (deep-merge :into {:a [1]} nil {:a [2]}) => {:a [1 2]}"
   {:added "0.2.0"
    :arglists '([strategy & values] [values])}
   [& values]
-  (let [[values strategy] (if (keyword? (first values))
+  (let [values (->> values (keep identity))
+        [values strategy] (if (keyword? (first values))
                             [(rest values) (first values)]
                             [values :replace])]
     (cond

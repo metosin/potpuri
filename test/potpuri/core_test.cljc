@@ -66,13 +66,14 @@
     (is (= (p/deep-merge {:a {:c 2}} {:a {:b 1}}) {:a {:b 1 :c 2}}))
     (is (= (p/deep-merge {:a 1} {:a 2}) {:a 2}))
     (is (= (p/deep-merge {:a {:b 1}} {:a {:b 2}}) {:a {:b 2}}))
-    (is (= (p/deep-merge {:a {:b 1}} {:a {:b nil}}) {:a {:b nil}}))
-    (is (= (p/deep-merge {:a 1} nil) nil))
-    )
+    (is (= (p/deep-merge {:a {:b 1}} {:a {:b nil}}) {:a {:b 1}}))
+    (is (= (p/deep-merge {:a 1} nil) {:a 1}))
+    (is (= (p/deep-merge {:a 1} nil {:b 2}) {:a 1 :b 2})))
 
   (testing "sequentials"
     (is (= (p/deep-merge {:a [1]} {:a [2]}) {:a [2]}))
     (is (= (p/deep-merge :into {:a [1]} {:a [2]}) {:a [1 2]}))
+    (is (= (p/deep-merge :into {:a [1]} nil {:a [2]}) {:a [1 2]}))
     (is (= (p/deep-merge :into {:a #{:a}} {:a #{:b}}) {:a #{:b :a}}))))
 
 (deftest wrap-into-test
