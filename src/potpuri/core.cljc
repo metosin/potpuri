@@ -90,7 +90,10 @@
 
        (deep-merge {:a {:c 2}} {:a {:b 1}}) => {:a {:b 1 :c 2}}
        (deep-merge :replace {:a [1]} {:a [2]}) => {:a [2]}
-       (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}"
+       (deep-merge :into {:a [1]} {:a [2]}) => {:a [1 2]}
+       (deep-merge {:a 1} nil) => nil
+
+   See also: [meta-merge](https://github.com/weavejester/meta-merge)."
   {:added "0.2.0"
    :arglists '([strategy & values] [values])}
   [& values]
