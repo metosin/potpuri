@@ -2,7 +2,7 @@
 
 [![Clojars Project](http://clojars.org/metosin/potpuri/latest-version.svg)](http://clojars.org/metosin/potpuri)
 
-[API Docs](http://metosin.github.io/potpuri/potpuri.core.html).
+[API Docs](http://metosin.github.io/potpuri/master/potpuri.core.html).
 
 Common stuff missing from the clojure.core.
 

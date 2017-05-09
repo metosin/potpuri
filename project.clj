@@ -6,7 +6,7 @@
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
-  :plugins [[lein-codox "0.10.2"]]
+  :plugins [[lein-codox "0.10.3"]]
 
   :source-paths ["src" "target/generated/src"]
   :test-paths ["test" "target/generated/test"]
