@@ -368,7 +368,11 @@
     => [{:id 1 :children [{:id 2} {:id 3}]}]
 
   Check test file for more examples."
-  [{:keys [parent-fn] :as opts} items]
+  [{:keys [parent-fn id-fn assoc-children-fn] :as opts} items]
+  (assert parent-fn ":parent-fn option is required.")
+  (assert id-fn ":id-fn option is required.")
+  (assert assoc-children-fn ":assoc-children-fn option is required.")
+
   (let [g (group-by parent-fn items)]
     ;; Start with items which have no parent => root items
     (build-tree' opts g (get g nil))))
