@@ -1,3 +1,9 @@
+## Unreleased
+
+[API Docs](http://metosin.github.io/potpuri/master/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.4.0...master)
+
+- Added `remove-keys` and `remove-vals`
+
 ## 0.4.0 (30.11.2016)
 
 [API Docs](http://metosin.github.io/potpuri/0.4.0/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.3.0...0.4.0)

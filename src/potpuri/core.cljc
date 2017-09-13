@@ -311,6 +311,18 @@
                          (if (pred v) (xf m k v) m)))
               coll))
 
+(defn remove-keys
+  "Removes given associative collection using function on the keys."
+  {:added "0.4.1"}
+  [pred coll]
+  (filter-keys (complement pred) coll))
+
+(defn remove-vals
+  "Removes given associative collection using function on the values."
+  {:added "0.4.1"}
+  [pred coll]
+  (filter-vals (complement pred) coll))
+
 (defn index-by
   "Returns a map of the elements of coll keyed by the result of
   f on each element. The value at each key will the last item

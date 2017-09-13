@@ -154,6 +154,12 @@
 (deftest filter-vals-test
   (is (= {:a 1} (p/filter-vals #{1} {:a 1 :b 2}))))
 
+(deftest remove-keys-test
+  (is (= {:b 2} (p/remove-keys #{:a} {:a 1 :b 2}))))
+
+(deftest remove-vals-test
+  (is (= {:b 2} (p/remove-vals #{1} {:a 1 :b 2}))))
+
 (deftest index-by-test
   (is (= {1 {:id 1 :v "foo"}
           2 {:id 2 :v "bar"}}
