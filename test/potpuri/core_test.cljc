@@ -167,3 +167,98 @@
 
 (deftest zip-test
   (is (= [[1 :a] [2 :b] [3 :c]] (p/zip [1 2 3] [:a :b :c]))))
+
+(deftest build-tree-test
+  (testing "Basic case, depth 1"
+    (is (= [{:id 1
+             :parent nil
+             :children [{:id 2 :parent 1}
+                        {:id 3 :parent 1}]}]
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :assoc-children-fn #(assoc %1 :children %2)}
+             [{:id 1 :parent nil}
+              {:id 2 :parent 1}
+              {:id 3 :parent 1}]))))
+
+  (testing "Basic case, modify items after building tree"
+    (is (= [{:id 1
+             :children [{:id 2}
+                        {:id 3}]}]
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :item-fn #(dissoc % :parent)
+              :assoc-children-fn #(assoc %1 :children %2)}
+             [{:id 1 :parent nil}
+              {:id 2 :parent 1}
+              {:id 3 :parent 1}]))))
+
+  (testing "Depth 2"
+    (is (= [{:id 1
+             :parent nil
+             :children [{:id 2 :parent 1
+                         :children [{:id 3 :parent 2}]}]}]
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :children-fn vec
+              :assoc-children-fn #(assoc %1 :children %2)}
+             [{:id 1 :parent nil}
+              {:id 2 :parent 1}
+              {:id 3 :parent 2}]))))
+
+  (testing "Multiple roots"
+    (is (= [{:id 1
+             :parent nil
+             :children [{:id 3 :parent 1}]}
+            {:id 2
+             :parent nil
+             :children [{:id 4 :parent 2}]}]
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :assoc-children-fn #(assoc %1 :children %2)}
+             [{:id 1 :parent nil}
+              {:id 2 :parent nil}
+              {:id 3 :parent 1}
+              {:id 4 :parent 2}]))))
+
+  (testing "Children as map"
+    (is (= {1 {:id 1
+               :parent nil
+               :children {2 {:id 2 :parent 1}
+                          3 {:id 3 :parent 1}}}}
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :children-fn #(p/index-by :id %)
+              :assoc-children-fn #(assoc %1 :children %2)}
+             [{:id 1 :parent nil}
+              {:id 2 :parent 1}
+              {:id 3 :parent 1}]))))
+
+  (testing "Duplicate items"
+    (is (= [{:id 1
+             :parent nil
+             :children [{:id 3 :parent 1}
+                        {:id 4 :parent 1}]}
+            {:id 2
+             :parent nil
+             :children [{:id 3 :parent 2}
+                        {:id 4 :parent 2}]}]
+           ;; In this case, user could separate :parents to items with :parent
+           (p/build-tree
+             {:id-fn :id
+              :parent-fn :parent
+              :assoc-children-fn #(assoc %1 :children %2)}
+             (mapcat (fn [item]
+                       (if (seq (:parents item))
+                         (map #(-> item (dissoc :parents) (assoc :parent %)) (:parents item))
+                         [(-> item (dissoc :parents) (assoc :parent nil))]))
+                     [{:id 1 :parents nil}
+                      {:id 2 :parents nil}
+                      {:id 3 :parents [1 2]}
+                      {:id 4 :parents [1 2]}])))))
+  )

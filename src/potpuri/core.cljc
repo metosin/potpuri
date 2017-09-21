@@ -344,3 +344,47 @@
   {:added "0.4.0"}
   [& colls]
   (apply map vector colls))
+
+(defn- build-tree' [{:keys [id-fn item-fn children-fn assoc-children-fn]
+                     :or {children-fn identity
+                          item-fn identity}
+                     :as opts}
+                    g
+                    items]
+  (children-fn
+    (map (fn [item]
+           (let [children (build-tree' opts g (get g (id-fn item)))]
+             (item-fn
+               (if (seq children)
+                 (assoc-children-fn item children)
+                 item))))
+         items)))
+
+(defn build-tree
+  "Builds a tree from given items collections.
+
+  ID is what is used to match parents and children.
+  Root items are those where parent-fn returns nil.
+
+  Options:
+
+  - :parent-fn (required) Used to create a map from ID => children
+  - :id-fn (required) Used to get the ID from an item
+  - :assoc-children-fn (required) Attach the children to an item
+  - :item-fn (optional) Called for each item, after children has been attached to the item
+  - :children-fn (optional) Called for each children collection
+
+  Example:
+    (build-tree {:id-fn :id, :parent-fn :parent, :assoc-children-fn #(assoc %1 :children %2)}
+                [{:id 1} {:id 2 :parent 1} {:id 3 :parent 1}])
+    => [{:id 1 :children [{:id 2} {:id 3}]}]
+
+  Check test file for more examples."
+  [{:keys [parent-fn id-fn assoc-children-fn] :as opts} items]
+  (assert parent-fn ":parent-fn option is required.")
+  (assert id-fn ":id-fn option is required.")
+  (assert assoc-children-fn ":assoc-children-fn option is required.")
+
+  (let [g (group-by parent-fn items)]
+    ;; Start with items which have no parent => root items
+    (build-tree' opts g (get g nil))))
