@@ -197,10 +197,10 @@
    Examples:
 
        (find-first [1 2 3] even?) => 2
-       (find-index [{:id 1} {:id 2, :foo :bar}] {:id 2}) => {:id 2, :foo :bar}
-       (find-index [{:a 1} {:b 2, :foo :bar}] :b) => {:b 2, :foo :bar}
-       (find-index [1 2 3] #{3}) => 3
-       (find-index [1 2 3] 3) => 3
+       (find-first [{:id 1} {:id 2, :foo :bar}] {:id 2}) => {:id 2, :foo :bar}
+       (find-first [{:a 1} {:b 2, :foo :bar}] :b) => {:b 2, :foo :bar}
+       (find-first [1 2 3] #{3}) => 3
+       (find-first [1 2 3] 3) => 3
        (-> [1 2 3] (find-first odd?)) => 1"
   {:added "0.2.0"}
   [coll where]
