@@ -1,4 +1,4 @@
-(defproject metosin/potpuri "0.5.0"
+(defproject metosin/potpuri "0.5.1-SNAPSHOT"
   :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
