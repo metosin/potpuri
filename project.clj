@@ -1,4 +1,4 @@
-(defproject metosin/potpuri "0.4.1-SNAPSHOT"
+(defproject metosin/potpuri "0.5.0-SNAPSHOT"
   :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
@@ -19,5 +19,6 @@
                    :dependencies [[criterium "0.4.4"]
                                   [org.clojure/clojurescript "1.7.228"]]}
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]]}}
+  :deploy-repositories [["releases" :clojars]]
   :aliases {"all" ["with-profile" "dev:dev,1.7"]
             "test-clj"  ["all" "do" ["test"] ["check"]]})

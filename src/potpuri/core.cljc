@@ -313,13 +313,13 @@
 
 (defn remove-keys
   "Removes given associative collection using function on the keys."
-  {:added "0.4.1"}
+  {:added "0.5.0"}
   [pred coll]
   (filter-keys (complement pred) coll))
 
 (defn remove-vals
   "Removes given associative collection using function on the values."
-  {:added "0.4.1"}
+  {:added "0.5.0"}
   [pred coll]
   (filter-vals (complement pred) coll))
 
@@ -380,6 +380,7 @@
     => [{:id 1 :children [{:id 2} {:id 3}]}]
 
   Check test file for more examples."
+  {:added "0.5.0"}
   [{:keys [parent-fn id-fn assoc-children-fn] :as opts} items]
   (assert parent-fn ":parent-fn option is required.")
   (assert id-fn ":id-fn option is required.")
