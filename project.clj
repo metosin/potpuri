@@ -9,7 +9,7 @@
   :plugins [[lein-codox "0.10.3"]
             [metosin/boot-alt-test "0.4.0-20171019.180106-3"]]
 
-  :alt-test {:report [eftest.report.pretty/report
+  :alt-test {:report [:pretty
                       {:type :junit
                        :output-to "target/junit.xml"}]}
 
