@@ -295,6 +295,15 @@
                          (xf m k (f v))))
               coll))
 
+(defn map-entries
+  "Map the entries of given associative collection using function."
+  {:added "0.5.1"}
+  [f coll]
+  (reduce-map (fn [xf] (fn [m k v]
+                (let [[k v] (f [k v])]
+                  (xf m k v))))
+              coll))
+
 (defn filter-keys
   "Filter given associative collection using function on the keys."
   {:added "0.2.2"}
@@ -311,6 +320,14 @@
                          (if (pred v) (xf m k v) m)))
               coll))
 
+(defn filter-entries
+  "Filter given associative collection using function on the values."
+  {:added "0.5.1"}
+  [pred coll]
+  (reduce-map (fn [xf] (fn [m k v]
+                (if (pred [k v]) (xf m k v) m)))
+              coll))
+
 (defn remove-keys
   "Removes given associative collection using function on the keys."
   {:added "0.5.0"}
@@ -322,6 +339,12 @@
   {:added "0.5.0"}
   [pred coll]
   (filter-vals (complement pred) coll))
+
+(defn remove-entries
+  "Removes given associative collection using function on the values."
+  {:added "0.5.1"}
+  [pred coll]
+  (filter-entries (complement pred) coll))
 
 (defn index-by
   "Returns a map of the elements of coll keyed by the result of
