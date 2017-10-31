@@ -1,3 +1,7 @@
+## UNRELEASED
+
+- Added `map-entries`,  `filter-entries` and `remove-entries`
+
 ## 0.5.0 (03.10.2017)
 
 [API Docs](http://metosin.github.io/potpuri/master/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.4.0...0.5.0)
