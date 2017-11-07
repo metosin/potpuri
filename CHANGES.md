@@ -1,4 +1,4 @@
-## UNRELEASED
+## 0.5.1 (7.11.2017)
 
 - Added `map-entries`,  `filter-entries` and `remove-entries`
 
