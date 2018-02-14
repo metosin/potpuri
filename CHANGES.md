@@ -1,10 +1,12 @@
 ## 0.5.1 (7.11.2017)
 
+[API Docs](http://metosin.github.io/potpuri/0.5.1/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.5.0...0.5.1)
+
 - Added `map-entries`,  `filter-entries` and `remove-entries`
 
 ## 0.5.0 (03.10.2017)
 
-[API Docs](http://metosin.github.io/potpuri/master/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.4.0...0.5.0)
+[API Docs](http://metosin.github.io/potpuri/0.5.0/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.4.0...0.5.0)
 
 - Added `remove-keys` and `remove-vals`
 - Added `build-tree`
