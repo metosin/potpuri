@@ -7,11 +7,10 @@
             :comments "same as Clojure"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
   :plugins [[lein-codox "0.10.3"]
-            [metosin/boot-alt-test "0.4.0-20171019.180106-3"]]
+            [metosin/bat-test "0.4.0"]]
 
-  :alt-test {:report [:pretty
-                      {:type :junit
-                       :output-to "target/junit.xml"}]}
+  :bat-test {:report [:pretty
+                      {:type :junit :output-to "target/junit.xml"}]}
 
   :source-paths ["src" "target/generated/src"]
   :test-paths ["test" "target/generated/test"]
@@ -26,4 +25,4 @@
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]]}}
   :deploy-repositories [["releases" :clojars]]
   :aliases {"all" ["with-profile" "dev:dev,1.7"]
-            "test-clj"  ["all" "do" ["alt-test"] ["check"]]})
+            "test-clj"  ["all" "do" ["bat-test"] ["check"]]})
