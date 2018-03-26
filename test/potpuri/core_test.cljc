@@ -271,3 +271,24 @@
                       {:id 3 :parents [1 2]}
                       {:id 4 :parents [1 2]}])))))
   )
+
+(deftest tree-leafs-test
+  (is (= [{:id 2} {:id 3} {:id 4}]
+         (p/tree-leafs [{:id 1
+                         :children [{:id 2}
+                                    {:id 3}]}
+                        {:id 4}]
+                       :children)))
+
+   (testing "branch with empty children list"
+     (is (= [{:id 1 :children nil}]
+            (p/tree-leafs [{:id 1
+                            :children nil}]
+                          :children)))
+
+     (is (= []
+            (p/tree-leafs [{:id 1
+                            :children nil}]
+                          #(contains? % :children)
+                          :children))
+         "Separate branch predicate")))

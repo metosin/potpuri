@@ -412,3 +412,18 @@
   (let [g (group-by parent-fn items)]
     ;; Start with items which have no parent => root items
     (build-tree' opts g (get g nil))))
+
+(defn tree-leafs
+  "Given a tree, branch? predicate and child-fn returns list of found
+  tree leafs.
+
+  If only single function is provided, it is used as both branch? predicate and child-fn."
+  {:added "0.5.2"}
+  ([tree child-fn]
+   (tree-leafs tree child-fn child-fn))
+  ([tree branch? child-fn]
+   (mapcat (fn [node]
+             (if (branch? node)
+               (tree-leafs (child-fn node) branch? child-fn)
+               [node]))
+           tree)))
