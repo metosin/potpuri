@@ -45,6 +45,8 @@
 
 (deftest dissoc-in-test
   (is (= (p/dissoc-in m [:a]) {}))
+  (is (= (p/dissoc-in m [:b :c]) m))
+  (is (= (p/dissoc-in {:a m} [:a :a]) {}))
 
   (is (= (p/dissoc-in m [:a :b2])
          {:a {:b1 {:c1 "kikka"
@@ -84,7 +86,8 @@
 (deftest assoc-if-test
   (is (= (p/assoc-if {} :a 5) {:a 5}))
   (is (= (p/assoc-if {:a 5} :b nil) {:a 5}))
-  (is (= (p/assoc-if {:a 5} :a nil) {:a 5})))
+  (is (= (p/assoc-if {:a 5} :a nil) {:a 5}))
+  (is (= (p/assoc-if {} :a 1 :b false :c 2) {:a 1 :b false :c 2})))
 
 (deftest conjv-test
   (is (= (p/conjv [1 2] 3) [1 2 3]))
