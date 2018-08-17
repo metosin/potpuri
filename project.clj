@@ -2,9 +2,7 @@
   :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"
-            :distribution :repo
-            :comments "same as Clojure"}
+            :url "http://www.eclipse.org/legal/epl-v20.html"}
   :dependencies [[org.clojure/clojure "1.8.0"]]
   :plugins [[lein-codox "0.10.3"]
             [metosin/bat-test "0.4.0"]]
