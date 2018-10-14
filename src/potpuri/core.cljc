@@ -184,7 +184,7 @@
     (first (keep-indexed #(if (pred %2) %1) coll))))
 
 (defn find-first
-  "Find first value from collection which mathes the where parameter.
+  "Find first value from collection which matches the where parameter.
 
    If where parameter is:
 
