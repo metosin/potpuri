@@ -139,7 +139,7 @@
               :cljs "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
-(defn- create-predicate [where]
+(defn create-predicate [where]
   (cond
     (fn? where)
     where
