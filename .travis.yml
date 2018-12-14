@@ -13,7 +13,6 @@ matrix:
     - env: TEST=cljs
       jdk: oraclejdk11
 jdk:
-  - openjdk7
   - oraclejdk8
   - oraclejdk11
 node_js:
