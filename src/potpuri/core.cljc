@@ -151,9 +151,6 @@
   against `where` using `clojure.core/=`."
   [where]
   (cond
-    (fn? where)
-    where
-
     ; fn? and map? first as map also implements IFn
     (map? where)
     (fn [v]
