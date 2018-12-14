@@ -89,6 +89,22 @@
   (is (= (p/assoc-if {:a 5} :a nil) {:a 5}))
   (is (= (p/assoc-if {} :a 1 :b false :c 2) {:a 1 :b false :c 2})))
 
+(deftest create-predicate-test
+  (testing "fn?'s are returned as is"
+    (let [f (constantly true)]
+      (is (identical? f (p/create-predicate f)))))
+
+  (testing "ifn?'s are returned as is"
+    (is (= :foo (p/create-predicate :foo)))
+    (is (= #{42} (p/create-predicate #{42}))))
+
+  (testing "map predicates"
+    (let [p (p/create-predicate {:foo 42})]
+      (is (= (p {:foo 42}) true))
+      (is (= (p {:foo 42
+                 :bar 1337}) true))
+      (is (= (p {:bar 1337}) false)))))
+
 (deftest conjv-test
   (is (= (p/conjv [1 2] 3) [1 2 3]))
   (is (= (update-in {:a [1 2]} [:a] p/conjv 3) {:a [1 2 3]}))
