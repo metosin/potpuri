@@ -2,10 +2,12 @@
   :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v20.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+            :url "http://www.eclipse.org/legal/epl-v10.html"
+            :distribution :repo
+            :comments "same as Clojure"}
+  :dependencies []
   :plugins [[lein-codox "0.10.3"]
-            [metosin/bat-test "0.4.0"]]
+            [metosin/bat-test "0.4.1"]]
 
   :bat-test {:report [:pretty
                       {:type :junit :output-to "target/junit.xml"}]}
@@ -18,9 +20,15 @@
           :metadata {:doc/format :markdown}}
 
   :profiles {:dev {:plugins [[jonase/eastwood "0.2.1"]]
-                   :dependencies [[criterium "0.4.4"]
+                   :dependencies [[org.clojure/clojure "1.9.0"]
+                                  [criterium "0.4.4"]
+                                  [org.clojure/clojurescript "1.10.439"]]}
+             :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]
+                                  ;; Test aren't run with old cljs - but new cljs would bring in
+                                  ;; new tools.reader which doesn't work with old Clojure.
                                   [org.clojure/clojurescript "1.7.228"]]}
-             :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]]}}
+             :1.8 {:dependencies [[org.clojure/clojure "1.8.0"]]}
+             :1.10 {:dependencies  [[org.clojure/clojure "1.10.0-RC2"]]}}
   :deploy-repositories [["releases" :clojars]]
-  :aliases {"all" ["with-profile" "dev:dev,1.7"]
+  :aliases {"all" ["with-profile" "dev:dev,1.7:dev,1.8:dev,1.10"]
             "test-clj"  ["all" "do" ["bat-test"] ["check"]]})

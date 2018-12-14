@@ -11,7 +11,7 @@ matrix:
     - env: TEST=cljs
       jdk: openjdk7
     - env: TEST=cljs
-      jdk: openjdk11
+      jdk: oraclejdk11
 jdk:
   - openjdk7
   - oraclejdk8
