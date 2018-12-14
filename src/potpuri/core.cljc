@@ -139,7 +139,17 @@
               :cljs "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
-(defn create-predicate [where]
+(defn create-predicate
+  "Returns a predicate that accepts a value and returns truthy based on `where` argument.
+
+  If `where` is a map, returns a predicate that compares all key/value pairs of `where` to
+  the key/values of the value given to the predicate.
+
+  If `where` is a function (either `fn?` or `ifn?`), returns `where`.
+
+  For all other values of `where` returns a predicate that compares the argument of predicate
+  against `where` using `clojure.core/=`."
+  [where]
   (cond
     (fn? where)
     where
