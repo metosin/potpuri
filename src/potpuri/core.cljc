@@ -139,16 +139,18 @@
               :cljs "assoc expects even number of arguments after map/vector, found odd number")))
        ret))))
 
-(defn create-predicate
-  "Returns a predicate that accepts a value and returns truthy based on `where` argument.
+(defn where-fn
+  "Returns a predicate that accepts a value and performs a check based on `where` argument.
 
   If `where` is a map, returns a predicate that compares all key/value pairs of `where` to
-  the key/values of the value given to the predicate.
+  the key/values of the value given to the predicate, and returns truthy value if all
+  pairs are found.
 
   If `where` is a function (either `fn?` or `ifn?`), returns `where`.
 
   For all other values of `where` returns a predicate that compares the argument of predicate
   against `where` using `clojure.core/=`."
+  {:added "0.5.2"}
   [where]
   (cond
     ; fn? and map? first as map also implements IFn
@@ -167,15 +169,14 @@
       (= v where))))
 
 (defn find-index
-  "Find index of vector which matches the where parameter.
+  "Find index of vector which matches the `where` parameter.
 
-   If where parameter is:
+   If `where` parameter is:
 
-   - a fn, it's used as predicate as is
-   - a map, a predicate is created which checks if value in collection has
-     same values for each key in where map
-   - Something which implements IFn, e.g. keywords and sets, is used as is
-   - any value, a predicate is created which checks if value is identitical
+   - a map, a predicate is created which compares every key/value pair of `where` value to
+     collection value.
+   - something which implements IFn, e.g. keywords and sets, is used as is
+   - other values, compares the item using using `clojure.core/=`
 
    Examples:
 
@@ -187,19 +188,18 @@
        (-> [1 2 3] (find-index odd?)) => 0"
   {:added "0.2.0"}
   [coll where]
-  (let [pred (create-predicate where)]
+  (let [pred (where-fn where)]
     (first (keep-indexed #(if (pred %2) %1) coll))))
 
 (defn find-first
-  "Find first value from collection which matches the where parameter.
+  "Find first value from collection which matches the `where` parameter.
 
-   If where parameter is:
+   If `where` parameter is:
 
-   - a fn, it's used as predicate as is
-   - a map, a predicate is created which checks if value in collection has
-     same values for each key in where map
-   - Something which implements IFn, e.g. keywords and sets, is used as is
-   - any value, a predicate is created which checks if value is identitical
+   - a map, a predicate is created which compares every key/value pair of `where` value to
+     collection value.
+   - something which implements IFn, e.g. keywords and sets, is used as is
+   - other values, compares the item using using `clojure.core/=`
 
    Examples:
 
@@ -211,17 +211,17 @@
        (-> [1 2 3] (find-first odd?)) => 1"
   {:added "0.2.0"}
   [coll where]
-  (let [pred (create-predicate where)]
+  (let [pred (where-fn where)]
     (some #(if (pred %) %) coll)))
 
 (defn assoc-first
-  "Finds the first element in collection matching where parameter and
+  "Finds the first element in collection matching `where` parameter and
    replaces that with `v.`
 
    Implementation depends on collection type."
   {:added "0.2.1"}
   [coll where v]
-  (let [pred (create-predicate where)]
+  (let [pred (where-fn where)]
     (cond
       (vector? coll) (assoc coll (find-index coll pred) v)
       :default (map (fn [x]
@@ -229,14 +229,14 @@
                     coll))))
 
 (defn update-first
-  "Finds the first element in collection matching the where parameter
+  "Finds the first element in collection matching the `where` parameter
    and updates that using `f.` `f` is called with current value and
    rest of update-first params.
 
    Implementation depends on collection type."
   {:added "0.2.1"}
   [coll where f & args]
-  (let [pred (create-predicate where)]
+  (let [pred (where-fn where)]
     (cond
       (vector? coll) (apply update-in coll [(find-index coll pred)] f args)
       :default (map (fn [x]

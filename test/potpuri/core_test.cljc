@@ -89,17 +89,17 @@
   (is (= (p/assoc-if {:a 5} :a nil) {:a 5}))
   (is (= (p/assoc-if {} :a 1 :b false :c 2) {:a 1 :b false :c 2})))
 
-(deftest create-predicate-test
+(deftest where-fn-test
   (testing "fn?'s are returned as is"
     (let [f (constantly true)]
-      (is (identical? f (p/create-predicate f)))))
+      (is (identical? f (p/where-fn f)))))
 
   (testing "ifn?'s are returned as is"
-    (is (= :foo (p/create-predicate :foo)))
-    (is (= #{42} (p/create-predicate #{42}))))
+    (is (= :foo (p/where-fn :foo)))
+    (is (= #{42} (p/where-fn #{42}))))
 
   (testing "map predicates"
-    (let [p (p/create-predicate {:foo 42})]
+    (let [p (p/where-fn {:foo 42})]
       (is (= (p {:foo 42}) true))
       (is (= (p {:foo 42
                  :bar 1337}) true))

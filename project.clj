@@ -22,6 +22,9 @@
   :profiles {:dev {:plugins [[jonase/eastwood "0.2.1"]]
                    :dependencies [[org.clojure/clojure "1.9.0"]
                                   [criterium "0.4.4"]
+                                  ;; FIXME: temp fix for JDK 11 - can be removed once
+                                  ;; eftest/bat-test are updated.
+                                  [mvxcvi/puget "1.0.3"]
                                   [org.clojure/clojurescript "1.10.439"]]}
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]
                                   ;; Test aren't run with old cljs - but new cljs would bring in
