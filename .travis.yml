@@ -1,6 +1,6 @@
 sudo: false
 language: clojure
-lein: 2.7.1
+lein: 2.8.1
 script: ./scripts/test.sh $TEST
 env:
   matrix:
@@ -9,15 +9,15 @@ env:
 matrix:
   exclude:
     - env: TEST=cljs
-      jdk: openjdk6
-    - env: TEST=cljs
       jdk: openjdk7
+    - env: TEST=cljs
+      jdk: openjdk11
 jdk:
-  - openjdk6
   - openjdk7
   - oraclejdk8
+  - oraclejdk11
 node_js:
-  - "0.10"
+  - 10
 cache:
   directories:
   - "$HOME/.m2"
