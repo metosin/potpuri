@@ -1,3 +1,10 @@
+## 0.5.2 (2018-12-14)
+
+[API Docs](http://metosin.github.io/potpuri/0.5.2/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.5.1...0.5.2)
+
+- Add `where-fn` function to return the predicate fn used by `find-first` and other
+similar functions
+
 ## 0.5.1 (7.11.2017)
 
 [API Docs](http://metosin.github.io/potpuri/0.5.1/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.5.0...0.5.1)
