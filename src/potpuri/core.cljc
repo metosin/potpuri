@@ -360,7 +360,7 @@
   {:added "0.3.0"}
   [f coll]
   ; FIXME: perf test against reduce+transient and zipmap
-  (into {} (map (juxt f identity) coll)))
+  (into {} (map (juxt f identity)) coll))
 
 (defn zip
   "Returns a sequence of vectors where the i-th vector contains
