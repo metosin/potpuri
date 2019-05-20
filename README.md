@@ -10,6 +10,6 @@ Inspired by [Medley](https://github.com/weavejester/medley).
 
 ## License
 
-Copyright © 2014-2018 [Metosin Oy](http://www.metosin.fi)
+Copyright © 2014-2019 [Metosin Oy](http://www.metosin.fi)
 
 Distributed under the Eclipse Public License 2.0.
