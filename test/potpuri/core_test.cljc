@@ -290,3 +290,9 @@
                       {:id 3 :parents [1 2]}
                       {:id 4 :parents [1 2]}])))))
   )
+
+(deftest update-if-contains-test
+  (is (nil? (p/update-if-contains nil :a inc)))
+  (is (= (p/update-if-contains {} :a inc) {}))
+  (is (= (p/update-if-contains {:a 0} :a inc) {:a 1}))
+  (is (= (p/update-if-contains {:a 0} :a + 5) {:a 5})))
