@@ -1,3 +1,9 @@
+## 0.5.3 (2021-01-04)
+
+[API Docs](https://cljdoc.org/d/metosin/potpuri/0.5.2) - [compare](https://github.com/metosin/potpuri/compare/0.5.2...0.5.3)
+
+- Add `update-if-contains`
+
 ## 0.5.2 (2018-12-14)
 
 [API Docs](http://metosin.github.io/potpuri/0.5.2/index.html) - [compare](https://github.com/metosin/potpuri/compare/0.5.1...0.5.2)

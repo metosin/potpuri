@@ -1,4 +1,4 @@
-(defproject metosin/potpuri "0.5.3-SNAPSHOT"
+(defproject metosin/potpuri "0.5.3"
   :description "Common stuff missing from the clojure.core."
   :url "https://github.com/metosin/potpuri"
   :license {:name "Eclipse Public License"
@@ -6,8 +6,8 @@
             :distribution :repo
             :comments "same as Clojure"}
   :dependencies []
-  :plugins [[lein-codox "0.10.3"]
-            [metosin/bat-test "0.4.2"]]
+  :plugins [[lein-codox "0.10.7"]
+            [metosin/bat-test "0.4.4"]]
 
   :bat-test {:report [:pretty
                       {:type :junit :output-to "target/junit.xml"}]}
@@ -19,9 +19,9 @@
           :source-uri "https://github.com/metosin/potpuri/blob/{version}/{filepath}#L{line}"
           :metadata {:doc/format :markdown}}
 
-  :profiles {:dev {:plugins [[jonase/eastwood "0.2.1"]]
+  :profiles {:dev {:plugins [[jonase/eastwood "0.3.12"]]
                    :dependencies [[org.clojure/clojure "1.9.0"]
-                                  [criterium "0.4.5"]
+                                  [criterium "0.4.6"]
                                   [org.clojure/clojurescript "1.10.520"]]}
              :1.7 {:dependencies [[org.clojure/clojure "1.7.0"]
                                   ;; Test aren't run with old cljs - but new cljs would bring in
