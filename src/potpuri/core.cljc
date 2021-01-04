@@ -419,3 +419,18 @@
   (let [g (group-by parent-fn items)]
     ;; Start with items which have no parent => root items
     (build-tree' opts g (get g nil))))
+
+(defn update-if-contains
+  "Applies `clojure.core/update` on an associative structure, when k
+  is a key contained in that structure. If the key does not exist, the
+  associative structure is returned as is.
+
+  Examples:
+
+      (update-if-contains {} :a inc) => {}
+      (update-if-contains {:a 0} :a inc) => {:a 1}
+  "
+  [m k & rest]
+  (if (contains? m k)
+    (apply update (conj rest k m))
+    m))
