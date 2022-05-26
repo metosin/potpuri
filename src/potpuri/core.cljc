@@ -74,7 +74,7 @@
    symbol values as values."
   {:added "0.1.0"}
   [& syms]
-  `(zipmap ~(vec (map keyword syms)) ~(vec syms)))
+  (zipmap (map keyword syms) syms))
 
 (defn deep-merge
   "Recursively merges maps.
