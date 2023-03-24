@@ -169,7 +169,7 @@
       (= v where))))
 
 (defn find-index
-  "Find index of vector which matches the `where` parameter.
+  "Find index of collection which matches the `where` parameter.
 
    If `where` parameter is:
 
